@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About - Mie Gacoan</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/about_style.css">
+    <link rel="stylesheet" href="../css/order_style.css">
 </head>
 <body>
     <!-- Navigation -->
     <nav class="nav">
         <div class="menu-wrap">
             <a href="homepage.html" class="logo">
-                <img src="assets/LogoMieGacoan-removebg-preview.png" alt="Mie Gacoan Logo">
+                <img src="assets/LogoMieGacoan-removebg-preview.png" alt="Mie Gacoan Logo" />
             </a>
             <div class="menu">
                 <a href="homepage.html" class="menu-item">Home</a>
@@ -28,60 +28,109 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Mie Gacoan</h1>
-            <p>We provide a complete service for the sale, purchase or rental of real estate. We have been operating in Madrid and Barcelona more than 15 years.</p>
+    <div class="head_container">
+        <div class="mainhead">
+            <h1>C A R T</h1>
+        </div>
+    </div>
+
+    <section class="cart-section">
+        <div class="row mt-4">
+            <div class="col-md-7">
+                <div class="card mb-4 p-3 shadow-sm">
+                    <h2 class="playfair">Food Items Ordered</h2>
+                    <div class="food-item-list">
+                        <ul>
+                            <li class="food-item">
+                                <img src="assets/gacoan.jpg" alt="Mie Goreng" width="80" height="80">
+                                <span>Mie Gacoan</span>
+                                <span>Quantity: 2</span>
+                            </li>
+                            <li class="food-item">
+                                <img src="assets/siomay.jpeg" alt="Bakso" width="80" height="80">
+                                <span>Siomay</span>
+                                <span>Quantity: 1</span>
+                            </li>
+                            <li class="food-item">
+                                <img src="assets/milo.jpg" alt="Es Teh Manis" width="80" height="80">
+                                <span>Es Milo</span>
+                                <span>Quantity: 3</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-5">
+                <div class="card mb-4 p-3 shadow-sm">
+                    <label for="checkoutType" class="form-label">Type of Checkout</label>
+                    <select id="checkoutType" class="form-select" onchange="optionSelect()">
+                        <option value="select" selected>-- select --</option>
+                        <option value="orderOnline">Order Online</option>
+                        <option value="takeoutOrder">Takeout Order</option>
+                    </select>
+                    <div id="info-checkout" class="mt-3"></div>
+                </div>
+
+                <h2 class="playfair">Payment Info</h2>
+                <div class="card mt-4 p-3">
+                    <div class="mb-3">
+                        <label class="form-label">Payment Method</label>
+                        <div class="d-flex align-items-center">
+                            <div class="form-check me-3">
+                                <input class="form-check-input" type="radio" name="paymentMethod" id="creditCard" checked>
+                                <label class="form-check-label" for="creditCard">Credit Card</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="paymentMethod" id="paypal">
+                                <label class="form-check-label" for="paypal">PayPal</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nameOnCard" class="form-label">Name on Card</label>
+                        <input type="text" class="form-control shadow-sm" id="nameOnCard" placeholder="Name on Card">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cardNumber" class="form-label">Card Number</label>
+                        <input type="text" class="form-control shadow-sm" id="cardNumber" placeholder="Card Number" maxlength="16">
+                    </div>
+                    <div class="d-flex">
+                        <div class="me-3 w-50">
+                            <label for="expirationDate" class="form-label">Expiration Date</label>
+                            <input type="text" class="form-control shadow-sm" id="expirationDate" placeholder="MM/YY">
+                        </div>
+                        <div class="w-50">
+                            <label for="cvv" class="form-label">CVV</label>
+                            <input type="text" class="form-control shadow-sm" id="cvv" placeholder="CVV" maxlength="4">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary w-100 mt-3 shadow-sm checkout-btn">Check Out</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="inputForCoupon">
+            <label for="couponCodes" id="haveCoupon">Have a Coupon?</label>
+            <div class="enterCouponCode">
+                <input type="text" name="inputCode" id="inputCode" placeholder="Enter Coupon Code">
+                <button id="applyCouponButton" onclick="applyFirstTimeDiscount()">Apply</button>
+            </div>
+
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <center><img src="../Images/party-popper.jpg" width="70" height="100" alt="party popper">
+                        <img src="../Images/congratulation-text.jpg" width="290" height="120" alt="congratulation text">
+                        <img src="../Images/party-popper.jpg" width="70" height="100" alt="party popper"></center>
+                    <center><p>Thank you for choosing our foodie!!</p></center>
+                    <center><img src="../Images/order-placedsign.jpg" width="120" height="80" alt="order placed sign"></center>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section class="about-section">
-        <div class="about-content">
-            <div class="about-text">
-                <h2>About us</h2>
-                <p>We are a company that connects the world of real estate with maximum security and transparency in your operations. Purchase or rental of real estate. Our advantage is many years of experience and familiarity with our customers. We are present in Madrid with branches in Barcelona and Malaga.</p>
-                <p>We have a commitment to give life to the house market, so we use tools everything under one roof. By constantly analyzing our activities and services, we not only stay up-to-date, but develop further and set ourselves apart from the competition.</p>
-            </div>
-            <div class="about-image">
-                <img src="assets/about-image.jpg" alt="About Mie Gacoan">
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-info">
-                <div class="footer-logo">
-                    <img src="assets/LogoMieGacoan-removebg-preview.png" alt="Mie Gacoan">
-                </div>
-                <p>In the new era of technology we look a in the future with certainty and pride for our company suit.</p>
-                <div class="social-links">
-                    <a href="#">Twitter</a>
-                    <a href="#">Facebook</a>
-                    <a href="#">Instagram</a>
-                    <a href="#">Pinterest</a>
-                </div>
-            </div>
-            <div class="footer-links">
-                <h3>Pages</h3>
-                <a href="homepage.html">Home</a>
-                <a href="about.html">About</a>
-                <a href="menu.html">Menu</a>
-                <a href="#">Pricing</a>
-                <a href="#">Blog</a>
-            </div>
-            <div class="footer-links">
-                <h3>Utility Pages</h3>
-                <a href="#">Start Here</a>
-                <a href="#">Styleguide</a>
-                <a href="#">Password Protected</a>
-                <a href="#">404 Not Found</a>
-                <a href="#">Licenses</a>
-            </div>
-        </div>
-    </footer>
+    <script src="../js/cart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

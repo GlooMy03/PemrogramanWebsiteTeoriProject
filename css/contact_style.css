@@ -131,6 +131,12 @@
 
 .about-text {
   flex: 1;
+  display: flex; /* Mengaktifkan flexbox untuk memusatkan konten secara vertikal dan horizontal */
+  flex-direction: column; /* Untuk menjaga alur elemen tetap vertikal */
+  align-items: center; /* Memusatkan secara horizontal */
+  justify-content: center; /* Memusatkan secara vertikal */
+  text-align: center; /* Memusatkan teks dalam elemen */
+  height: 100%; /* Opsional, tergantung tata letak */
 }
 
 .about-text h2 {
@@ -146,6 +152,7 @@
   margin-bottom: 1.5rem;
 }
 
+
 .about-image {
   flex: 1;
 }
@@ -155,6 +162,77 @@
   border-radius: 10px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
+
+/* General Container Styling */
+.container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+/* Form Styling */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Label Styling */
+label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Input and Textarea Styling */
+input[type="text"],
+input[type="email"],
+textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+textarea:focus {
+  border-color: #FF0099;
+  box-shadow: 0 0 4px #FF0099(0, 123, 255, 0.5);
+}
+
+/* Textarea Specific Styling */
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Button Styling */
+button {
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #FF0099;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #FF0099;
+}
+
 
 /* Footer */
 footer {

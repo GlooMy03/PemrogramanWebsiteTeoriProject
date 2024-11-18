@@ -92,28 +92,6 @@
   transform: translateY(-2px);
 }
 
-/* Hero Section */
-.hero {
-  height: 100vh;
-  background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('../html/assets/Rekomendasi-Menu-Mie-Gacoan-Beserta-Harganya-yang-Wajib-Kamu-Coba.jpg');
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  align-items: center;
-  padding: 0 6rem;
-  color: white;
-}
-
-.hero h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: 4rem;
-  margin-bottom: 1rem;
-}
-
-.hero p {
-  max-width: 600px;
-  line-height: 1.6;
-}
 
 /* About Section */
 .about-section {
@@ -156,6 +134,59 @@
   box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
 
+/* Other Section */
+.other-section {
+  padding: 2rem;
+  background: #fff;
+  text-align: center;
+}
+
+.other-section h2 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 2rem;
+  font-family: Arial, sans-serif;
+}
+
+.other-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.other-card {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s ease-in-out;
+}
+
+.other-card:hover {
+  transform: translateY(-5px);
+}
+
+.other-card h3 {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 1rem;
+  font-family: Arial, sans-serif;
+}
+
+.other-card a {
+  text-decoration: none;
+  color: #ff1493;
+  font-weight: bold;
+  font-size: 1rem;
+  font-family: Arial, sans-serif;
+}
+.team-image img{
+  width: 20%;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
 /* Footer */
 footer {
   background: #333;

@@ -1,0 +1,334 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+  }
+  
+  .nav {
+    padding: 1rem 6rem;
+    background: rgb(255, 255, 255);
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+}
+
+.nav .menu-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo img {
+    height: 50px;
+}
+
+.menu {
+    display: flex;
+    gap: 3.5rem;
+}
+
+.menu-item {
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 16px;
+    color: #666666; /* Warna abu-abu untuk item tidak aktif */
+    background: transparent;
+    transition: all 0.3s ease;
+    border-radius: 4px; /* Mengubah border-radius agar lebih mirip dengan gambar */
+}
+
+.menu-item.active {
+    background-color: #FF0099; /* Warna hijau untuk item aktif */
+    color: white;
+}
+
+.menu-item:hover {
+    background: #FF0099; /* Warna hijau saat hover */
+    color: white;
+    transform: translateY(-2px); /* Mempertahankan efek float up */
+}
+
+.right-menu {
+    display: flex;
+    gap: 1rem;
+}
+
+.right-menu button {
+    padding: 0.8rem 2.5rem;
+    border-radius: 50px;
+    border: 2px solid;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease; /* Untuk animasi halus */
+    background: transparent
+}
+
+.sign-in {
+    background: white;
+    color: #FF0099;
+    border: 1px solid #FF0099;
+    background: transparent;
+}
+.sign-in:hover {
+    background: #FF0099;
+    color: white;
+    box-shadow: 0 4px 10px rgba(255, 0, 153, 0.2);
+    transform: translateY(-2px); /* Membuat efek mengambang saat hover */
+}
+
+.login {
+    background: white;
+    border: 1px solid #FF0099;
+    color: #FF0099;
+}
+
+.login:hover {
+    background: #FF0099;
+    color: white;
+    box-shadow: 0 4px 10px rgba(255, 0, 153, 0.2);
+    transform: translateY(-2px);
+}
+  
+/* Promo Section */
+.promo-section {
+    width: 1332px;
+    height: 464.78px;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    padding-top: 6%;
+    padding-bottom: 6%;
+    align-items: center;
+    
+}
+ /* Menu Section */
+.menu-section {
+    padding: var(--section-padding);
+    max-width: var(--max-width);
+    margin: 0 auto;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+    padding-top: 6%;
+}
+
+.section-header h2 {
+    font-size: 2rem;
+    color: var(--text-dark);
+    font-family: 'Playfair Display', serif; /* Sesuai gambar */
+}
+
+.view-more {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsif */
+    gap: 2rem;
+}
+
+.menu-item {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* Shadow lebih nyata */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: var(--white);
+}
+
+.menu-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Shadow saat hover */
+}
+
+.menu-item img {
+    width: 100%;
+    height: 180px; /* Tinggi gambar konsisten */
+    object-fit: cover;
+}
+
+.menu-item-info {
+    padding: 1rem 1.5rem;
+    text-align: left;
+}
+
+.menu-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.menu-item-title {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--text-dark);
+}
+
+.menu-item-price {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.menu-item-category {
+    color: var(--text-light);
+    font-size: 0.7rem;
+    margin-top: 0.5rem;
+}
+.add-to-cart {
+    position: absolute;
+    bottom: 10px; /* Jarak dari bawah */
+    right: 10px; /* Jarak dari kanan */
+    background-color: var(--primary-color); /* Warna background solid */
+    border-radius: 50%; /* Membuat lingkaran */
+    width: 40px; /* Ukuran lingkaran */
+    height: 40px; /* Ukuran lingkaran */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer; /* Pointer untuk hover */
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Bayangan solid */
+}
+.icon-plus {
+    font-size: 1.5rem;
+    color: var(--white);
+    font-weight: bold;
+}
+
+.icon-plus:hover {
+    background-color: var(--dark-primary-color); /* Warna berubah saat hover */
+    transform: scale(1.1); /* Sedikit membesar */
+}
+
+/* Other Section */
+.other-section {
+    padding: 2rem;
+    background: #fff;
+    text-align: center;
+}
+
+.other-section h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 2rem;
+    font-family: Arial, sans-serif;
+}
+
+.other-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.other-card {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+}
+
+.other-card:hover {
+    transform: translateY(-5px);
+}
+
+.other-card h3 {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 1rem;
+    font-family: Arial, sans-serif;
+}
+
+.other-card a {
+    text-decoration: none;
+    color: #ff1493;
+    font-weight: bold;
+    font-size: 1rem;
+    font-family: Arial, sans-serif;
+}
+
+/* Footer */
+footer {
+    background: #333;
+    color: white;
+    padding: 4rem 6rem;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer-logo img {
+    height: 40px;
+    margin-bottom: 1rem;
+}
+
+.footer-links h3 {
+    margin-bottom: 1rem;
+}
+
+.footer-links a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.social-links a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .nav {
+        padding: 1rem 2rem;
+    }
+
+    .menu {
+        display: none;
+    }
+
+    .hero {
+        padding: 0 2rem;
+    }
+
+    .menu-section,
+    .testimonials {
+        padding: 4rem 2rem;
+    }
+
+    .menu-cards,
+    .testimonial-cards {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        gap: 2rem;
+    }
+}
