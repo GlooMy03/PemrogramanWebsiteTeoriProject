@@ -40,23 +40,61 @@
                 <div class="card mb-4 p-3 shadow-sm">
                     <h2 class="playfair">Food Items Ordered</h2>
                     <div class="food-item-list">
-                        <ul>
-                            <li class="food-item">
+                        <ul id="cartItems">
+                            <li class="food-item" data-id="mie-gacoan">
                                 <img src="assets/gacoan.jpg" alt="Mie Goreng" width="80" height="80">
-                                <span>Mie Gacoan</span>
-                                <span>Quantity: 2</span>
+                                <div class="food-item-details">
+                                    <span class="food-name">Mie Gacoan</span>
+                                    <span class="food-price">Rp 15.000</span>
+                                </div>
+                                <div class="quantity-control">
+                                    <button class="qty-btn minus">-</button>
+                                    <span class="quantity">1</span>
+                                    <button class="qty-btn plus">+</button>
+                                </div>
+                                <span class="item-total">Rp 15.000</span>
                             </li>
-                            <li class="food-item">
-                                <img src="assets/siomay.jpeg" alt="Bakso" width="80" height="80">
-                                <span>Siomay</span>
-                                <span>Quantity: 1</span>
+                            <li class="food-item" data-id="siomay">
+                                <img src="assets/siomay.jpeg" alt="Siomay" width="80" height="80">
+                                <div class="food-item-details">
+                                    <span class="food-name">Siomay</span>
+                                    <span class="food-price">Rp 12.000</span>
+                                </div>
+                                <div class="quantity-control">
+                                    <button class="qty-btn minus">-</button>
+                                    <span class="quantity">1</span>
+                                    <button class="qty-btn plus">+</button>
+                                </div>
+                                <span class="item-total">Rp 12.000</span>
                             </li>
-                            <li class="food-item">
-                                <img src="assets/milo.jpg" alt="Es Teh Manis" width="80" height="80">
-                                <span>Es Milo</span>
-                                <span>Quantity: 3</span>
+                            <li class="food-item" data-id="es-milo">
+                                <img src="assets/milo.jpg" alt="Es Milo" width="80" height="80">
+                                <div class="food-item-details">
+                                    <span class="food-name">Es Milo</span>
+                                    <span class="food-price">Rp 8.000</span>
+                                </div>
+                                <div class="quantity-control">
+                                    <button class="qty-btn minus">-</button>
+                                    <span class="quantity">1</span>
+                                    <button class="qty-btn plus">+</button>
+                                </div>
+                                <span class="item-total">Rp 8.000</span>
                             </li>
                         </ul>
+                        <div class="cart-summary">
+                            <div class="subtotal">
+                                <span>Subtotal:</span>
+                                <span id="subtotal">Rp 35.000</span>
+                            </div>
+                            <div class="tax">
+                                <span>Tax (10%):</span>
+                                <span id="tax">Rp 3.500</span>
+                            </div>
+                            <div class="total">
+                                <span>Total:</span>
+                                <span id="total">Rp 38.500</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -77,14 +115,19 @@
                     <div class="mb-3">
                         <label class="form-label">Payment Method</label>
                         <div class="d-flex align-items-center">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="paymentMethod" id="cash">
+                                <label class="form-check-label" for="cash">Cash</label>
+                            </div>
                             <div class="form-check me-3">
                                 <input class="form-check-input" type="radio" name="paymentMethod" id="creditCard" checked>
                                 <label class="form-check-label" for="creditCard">Credit Card</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="paymentMethod" id="paypal">
-                                <label class="form-check-label" for="paypal">PayPal</label>
+                                <input class="form-check-input" type="radio" name="paymentMethod" id="qriss">
+                                <label class="form-check-label" for="qriss">QRISS</label>
                             </div>
+                            
                         </div>
                     </div>
                     <div class="mb-3">
@@ -130,7 +173,7 @@
         </div>
     </section>
 
-    <script src="../js/cart.js"></script>
+    <script src="../js/order.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

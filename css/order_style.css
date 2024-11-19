@@ -108,210 +108,223 @@
 }
 
 /* Cart Section */
+/* Cart Section Styles */
 .cart-section {
-  padding: 5rem 2rem;
-  display: flex;
-  justify-content: center;
-}
-
-.cart {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 2rem;
-  width: 100%;
-  max-width: 1200px; /* Ensure content doesn't stretch too much */
-}
-
-.cart-details {
-  width: 60%;
-}
-
-.cart-total {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #333;
+  padding: 2rem 6rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .row {
   display: flex;
-  justify-content: space-between;
-  margin-top: 3rem;
+  gap: 2rem;
+  margin-top: 2rem;
 }
 
-.row button {
-  width: 100%;
-  font-size: 1.1rem;
+.col-md-7 {
+  flex: 7;
+}
+
+.col-md-5 {
+  flex: 5;
+}
+
+/* Updated Food Item Styles */
+.food-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  gap: 1.5rem;
+  align-items: center;
   padding: 1rem;
-  border: none;
-  background-color: #FF0099;
-  color: white;
-  border-radius: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.food-item-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.food-name {
+  font-weight: 500;
+  color: #333;
+}
+
+.food-price {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.qty-btn {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #FF0099;
+  background: white;
+  color: #FF0099;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
 }
 
-.row button:hover {
-  background-color: #cc0077;
+.qty-btn:hover {
+  background: #FF0099;
+  color: white;
 }
 
+.quantity {
+  min-width: 30px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.item-total {
+  font-weight: 500;
+  color: #333;
+  min-width: 100px;
+  text-align: right;
+}
+
+.cart-summary {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 2px solid #eee;
+}
+
+.cart-summary > div {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+}
+
+.total {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #FF0099;
+  border-top: 1px solid #eee;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+}
+
+/* Payment Section Styles */
 .card {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
-  width: 100%;
-  max-width: 500px; /* Limit card width */
-  margin: 0 auto; /* Center card */
+  margin-bottom: 1.5rem;
 }
 
-.card label {
-  font-weight: bold;
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #333;
 }
 
-.card select,
-.card input {
+.form-select, 
+.form-control {
   width: 100%;
   padding: 0.8rem;
-  margin-top: 0.5rem;
+  border: 1px solid #ddd;
   border-radius: 8px;
-  border: 1px solid #ccc;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
 }
 
-.card button {
-  margin-top: 1rem;
+.form-select:focus,
+.form-control:focus {
+  outline: none;
+  border-color: #FF0099;
+  box-shadow: 0 0 0 2px rgba(255, 0, 153, 0.1);
+}
+
+.d-flex {
+  display: flex;
+  gap: 1rem;
+}
+
+.form-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.checkout-btn {
+  background: #FF0099;
+  color: white;
+  border: none;
   padding: 1rem;
   border-radius: 8px;
-  background-color: #FF0099;
-  color: white;
-  border: none;
+  font-weight: 500;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.card button:hover {
-  background-color: #cc0077;
+.checkout-btn:hover {
+  background: #e6008c;
+  transform: translateY(-2px);
 }
 
+/* Coupon Section Styles */
 .inputForCoupon {
-  margin-top: 3rem;
-  text-align: center;
-}
-
-.inputForCoupon input {
-  padding: 0.8rem 1.5rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-
-.inputForCoupon button {
-  padding: 0.8rem 1.5rem;
-  border: none;
-  background-color: #FF0099;
-  color: white;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.inputForCoupon button:hover {
-  background-color: #cc0077;
-}
-
-.donate-button {
   margin-top: 2rem;
-  text-align: center;
+  text-align: left;
+  padding: 0 1rem;
 }
 
-.donate-button button {
-  padding: 0.8rem 1.5rem;
-  border: none;
-  background-color: #FF0099;
+.enterCouponCode {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+#inputCode {
+  flex: 1;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+#applyCouponButton {
+  padding: 0.8rem 2rem;
+  background: #FF0099;
   color: white;
+  border: none;
   border-radius: 8px;
   cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
 }
 
-.donate-button button:hover {
-  background-color: #cc0077;
+#applyCouponButton:hover {
+  background: #e6008c;
 }
-
-/* Modal */
-.modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-content {
-  background-color: #fff;
-  border-radius: 8px;
-  padding: 2rem;
-  text-align: center;
-}
-
-.modal-content img {
-  width: 100px;
-  margin: 1rem 0;
-}
-
-.close {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  font-size: 2rem;
-  cursor: pointer;
-}
-
 
 /* Responsive Design */
-@media (max-width: 768px) {
-  .nav {
-      padding: 1rem 2rem;
-  }
-
-  .menu {
-      display: none;
-  }
-
-  .hero {
-      padding: 0 2rem;
-  }
-
-  .about-section {
-      padding: 4rem 2rem;
-  }
-
-  .about-content {
-      flex-direction: column;
-      text-align: center;
-  }
-
-  .footer-content {
-      flex-direction: column;
-      gap: 2rem;
-  }
-
+@media (max-width: 1024px) {
   .cart-section {
-    padding: 4rem 1rem;
+      padding: 2rem;
   }
+}
 
-  .cart {
-    flex-direction: column;
+@media (max-width: 768px) {
+  .row {
+      flex-direction: column;
   }
-
-  .cart-details {
-    width: 100%;
-  }
-
-  .cart-total {
-    text-align: center;
-    margin-top: 1rem;
+  
+  .col-md-7,
+  .col-md-5 {
+      width: 100%;
   }
 }
