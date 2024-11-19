@@ -34,7 +34,19 @@
         </div>
     </div>
 
+    
     <section class="cart-section">
+
+        <div class="inputForCoupon">
+            <label for="couponCodes" id="haveCoupon">Have a Coupon?</label>
+            <div class="enterCouponCode">
+                <input type="text" name="inputCode" id="inputCode" placeholder="Enter Coupon Code">
+                <button id="applyCouponButton" onclick="applyFirstTimeDiscount()">Apply</button>
+            </div>
+
+            
+        </div>
+
         <div class="row mt-4">
             <div class="col-md-7">
                 <div class="card mb-4 p-3 shadow-sm">
@@ -153,25 +165,42 @@
             </div>
         </div>
 
-        <div class="inputForCoupon">
-            <label for="couponCodes" id="haveCoupon">Have a Coupon?</label>
-            <div class="enterCouponCode">
-                <input type="text" name="inputCode" id="inputCode" placeholder="Enter Coupon Code">
-                <button id="applyCouponButton" onclick="applyFirstTimeDiscount()">Apply</button>
-            </div>
+      
+    </section>
 
-            <div id="myModal" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <center><img src="../Images/party-popper.jpg" width="70" height="100" alt="party popper">
-                        <img src="../Images/congratulation-text.jpg" width="290" height="120" alt="congratulation text">
-                        <img src="../Images/party-popper.jpg" width="70" height="100" alt="party popper"></center>
-                    <center><p>Thank you for choosing our foodie!!</p></center>
-                    <center><img src="../Images/order-placedsign.jpg" width="120" height="80" alt="order placed sign"></center>
-                </div>
+     <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+        <div class="footer-info">
+            <div class="footer-logo">
+                <img src="assets/LogoMieGacoan-removebg-preview.png" alt="Mie Gacoan">
+            </div>
+            <p>In the new era of technology we look a in the future with certainty and pride for our company suit.</p>
+            <div class="social-links">
+                <a href="#">Twitter</a>
+                <a href="#">Facebook</a>
+                <a href="#">Instagram</a>
+                <a href="#">Pinterest</a>
             </div>
         </div>
-    </section>
+        <div class="footer-links">
+            <h3>Pages</h3>
+            <a href="homepage.html">Home</a>
+            <a href="#">About</a>
+            <a href="menu.html">Menu</a>
+            <a href="#">Pricing</a>
+            <a href="#">Blog</a>
+        </div>
+        <div class="footer-links">
+            <h3>Utility Pages</h3>
+            <a href="#">Start Here</a>
+            <a href="#">Styleguide</a>
+            <a href="#">Password Protected</a>
+            <a href="#">404 Not Found</a>
+            <a href="#">Licenses</a>
+        </div>
+    </div>
+</footer>
 
     <script src="../js/order.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
