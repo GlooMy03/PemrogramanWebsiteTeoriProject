@@ -91,9 +91,9 @@
     box-shadow: 0 4px 10px rgba(255, 0, 153, 0.2);
     transform: translateY(-2px);
   }
-  
-  /* Hero Section */
-  .hero {
+   
+/* Hero Section */
+.hero {
     height: 100vh;
     background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('../html/assets/Rekomendasi-Menu-Mie-Gacoan-Beserta-Harganya-yang-Wajib-Kamu-Coba.jpg');
     background-size: cover;
@@ -102,20 +102,19 @@
     align-items: center;
     padding: 0 6rem;
     color: white;
-  }
-  
-  .hero h1 {
+}
+
+.hero h1 {
     font-family: 'Playfair Display', serif;
     font-size: 4rem;
     margin-bottom: 1rem;
-  }
-  
-  .hero p {
+}
+
+.hero p {
     max-width: 600px;
     line-height: 1.6;
-  }
-  
-
+    margin-bottom: 2rem;
+}
 
 /* Menu Section Styles */
 .menu-section {
@@ -157,7 +156,7 @@
     gap: 30px;
 }
 
-.menu-item {
+.menuMKN-item {
     background: #fff;
     border-radius: 12px;
     overflow: hidden;
@@ -165,48 +164,47 @@
     transition: transform 0.3s ease;
 }
 
-.menu-item:hover {
+.menuMKN-item:hover {
     transform: translateY(-5px);
 }
 
-.menu-item img {
+.menuMKN-item img {
     width: 100%;
     height: 200px;
     object-fit: cover;
 }
 
-.menu-item-info {
+.menuMKN-item-info {
     padding: 20px;
 }
 
-.menu-item-header {
+.menuMKN-item-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 8px;
 }
 
-.menu-item-title {
+.menuMKN-item-title {
     font-family: 'Inter', sans-serif;
     font-size: 18px;
     font-weight: 600;
     color: #333;
 }
 
-.menu-item-price {
+.menuMKN-item-price {
     font-family: 'Inter', sans-serif;
     font-size: 18px;
     font-weight: 600;
     color: #e74c3c;
 }
 
-.menu-item-category {
+.menuMKN-item-category {
     font-family: 'Inter', sans-serif;
     font-size: 14px;
     color: #666;
     display: block;
 }
-
 /* Responsive Design */
 @media screen and (max-width: 768px) {
     .menu-section {
@@ -222,18 +220,18 @@
         gap: 20px;
     }
     
-    .menu-item-info {
+    .menuMKN-item-info {
         padding: 15px;
     }
     
-    .menu-item-title,
-    .menu-item-price {
+    .menuMKN-item-title,
+    .menuMKN-item-price {
         font-size: 16px;
     }
 }
 
 @media screen and (max-width: 480px) {
-    .menu-section {
+    .menuMKN-section {
         padding: 20px 3%;
     }
     
