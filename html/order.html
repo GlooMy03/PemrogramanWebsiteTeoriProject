@@ -112,47 +112,16 @@
             </div>
 
             <div class="col-md-5">
+                <!-- Checkout Options -->
                 <div class="card mb-4 p-3 shadow-sm">
                     <label for="checkoutType" class="form-label">Type of Checkout</label>
-                    <select id="checkoutType" class="form-select" onchange="optionSelect()">
+                    <select id="checkoutType" class="form-select">
                         <option value="select" selected>-- select --</option>
                         <option value="orderOnline">Order Online</option>
-                        <option value="orderOnline">Dine In Order</option>
+                        <option value="dineInOrder">Dine In Order</option>
                         <option value="takeoutOrder">Takeout Order</option>
                     </select>
                     <div id="info-checkout" class="mt-3"></div>
-                </div>
-
-                <h2 class="playfair">Payment Info</h2>
-                <div class="card mt-4 p-3">
-                    <div class="mb-3">
-                        <label class="form-label">Payment Method</label>
-                        <div class="d-flex align-items-center">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="paymentMethod" id="cash">
-                                <label class="form-check-label" for="cash">Cash</label>
-                            </div>
-                            <div class="form-check me-3">
-                                <input class="form-check-input" type="radio" name="paymentMethod" id="creditCard" checked>
-                                <label class="form-check-label" for="creditCard">Credit Card</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="paymentMethod" id="qriss">
-                                <label class="form-check-label" for="qriss">QRISS</label>
-                            </div>
-                            
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="nameOnCard" class="form-label">Name on Card</label>
-                        <input type="text" class="form-control shadow-sm" id="nameOnCard" placeholder="Name on Card">
-                    </div>
-                    <div class="mb-3">
-                        <label for="cardNumber" class="form-label">Card Number</label>
-                        <input type="text" class="form-control shadow-sm" id="cardNumber" placeholder="Card Number" maxlength="16">
-                    </div>
-                    
-                    <button class="btn btn-primary w-100 mt-3 shadow-sm checkout-btn">Check Out</button>
                 </div>
             </div>
         </div>
