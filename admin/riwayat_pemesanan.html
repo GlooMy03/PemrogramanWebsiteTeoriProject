@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mie Gacoan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">    <!-- Navigation -->
+    <link rel="stylesheet" href="../css/riwayat_pemesanan_style.css">
+    <nav class="nav">
+        <div class="menu-wrap">
+            <a href="homepage.html" class="logo">
+                <img src="../html/assets/LogoMieGacoan-removebg-preview.png" alt="Mie Gacoan Logo">
+            </a>
+            <div class="menu">
+                <a href="homepage.html" class="menu-item active">Home</a>
+                <a href="about.html" class="menu-item">About</a>
+                <a href="menu.html" class="menu-item">Menu</a>
+                <a href="order.html" class="menu-item">Order</a>
+                <a href="contact.html" class="menu-item">Contact</a>
+            </div>
+            <div class="right-menu">
+                <button class="login" onclick="location.href='login.html';">Login</button>
+                <button class="sign-in" onclick="location.href='signup.html';">Sign Up</button>
+            </div>
+        </div>
+    </nav>
+</head>
+<body>
+    <h1>Riwayat Pemesanan</h1>
+    <table id="riwayatpesanan">
+        <thead>
+            <tr>
+                <th>Nama</th>
+                <th>Makanan</th>
+                <th>Minuman</th>
+                <th>Dimsum</th>
+                <th>Type Pembelian</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data bookings akan ditambahkan di sini -->
+        </tbody>
+    </table>
+
+    <script>
+        fetch('http://localhost/php_folder_praktikum/teoriweb/PemrogramanWebsiteTeoriProject/admin/get_database.php')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Data:', data);
+                const riwayatpesanan = document.getElementById('riwayatpesanan').querySelector('tbody');
+                data.forEach(pesanan => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${pesanan.nama}</td>
+                        <td>${pesanan.makanan}</td>
+                        <td>${pesanan.minuman}</td>
+                        <td>${pesanan.dimsum}</td>
+                        <td>${pesanan.type_pembelian}</td>
+                        <td>${pesanan.total}</td>
+                    `;
+                    riwayatpesanan.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    </script>
+</body>
+</html>

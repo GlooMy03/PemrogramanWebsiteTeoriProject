@@ -1,0 +1,138 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Navigation */
+.nav {
+    padding: 1rem 6rem;
+    background: rgb(255, 255, 255);
+    position: fixed;
+    top: 0; /* Menambahkan posisi agar tetap di atas */
+    left: 0; /* Memastikan nav menempel di sisi kiri */
+    width: 100%;
+    z-index: 100;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Memberikan sedikit bayangan untuk estetika */
+}
+
+.nav .menu-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo img {
+    height: 50px;
+    object-fit: contain; /* Menghindari distorsi gambar */
+}
+
+.menu {
+    display: flex;
+    gap: 3.5rem;
+}
+
+.menu-item {
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 16px;
+    color: #666666; /* Warna abu-abu untuk item tidak aktif */
+    background: transparent;
+    transition: all 0.3s ease-in-out; /* Menambahkan transisi halus */
+    border-radius: 4px; /* Border-radius tetap konsisten */
+}
+
+.menu-item.active {
+    background-color: #FF0099; /* Warna pink untuk item aktif */
+    color: white;
+}
+
+.menu-item:hover {
+    background: #FF0099; /* Warna pink saat hover */
+    color: white;
+    transform: translateY(-2px); /* Efek naik */
+}
+
+.right-menu {
+    display: flex;
+    gap: 1rem;
+}
+
+.right-menu button {
+    padding: 0.8rem 2.5rem;
+    border-radius: 50px;
+    border: 1px solid; /* Border lebih tipis untuk konsistensi */
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease; /* Animasi hover */
+    background: transparent;
+}
+
+.sign-in {
+    color: #FF0099;
+    border: 1px solid #FF0099;
+    background: transparent;
+}
+.sign-in:hover {
+    background: #FF0099;
+    color: white;
+    box-shadow: 0 4px 10px rgba(255, 0, 153, 0.2);
+    transform: translateY(-2px);
+}
+
+.login {
+    color: #FF0099;
+    border: 1px solid #FF0099;
+    background: transparent;
+}
+
+.login:hover {
+    background: #FF0099;
+    color: white;
+    box-shadow: 0 4px 10px rgba(255, 0, 153, 0.2);
+    transform: translateY(-2px);
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0; /* Margin diatur menjadi 0 agar sesuai dengan reset global */
+    padding-top: 5rem; /* Memberikan jarak untuk menghindari overlap dengan nav */
+    background-color: #f9f9f9; /* Warna background untuk kesan bersih */
+}
+
+h1 {
+    text-align: center;
+    margin: 2rem 0; /* Jarak vertikal lebih proporsional */
+    font-size: 2.5em; /* Ukuran font lebih besar */
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 2rem; /* Jarak lebih proporsional */
+    background-color: #fff; /* Background putih untuk tabel */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Memberikan sedikit bayangan */
+    border-radius: 8px; /* Sudut tabel melengkung */
+    overflow: hidden; /* Agar border-radius berfungsi */
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+    font-size: 1rem;
+}
+
+th {
+    background-color: #f4f4f4;
+    font-weight: 600;
+    text-align: center;
+}
+
+td {
+    text-align: center; /* Konten di tengah agar lebih rapi */
+}
+

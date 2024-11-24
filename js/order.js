@@ -96,7 +96,108 @@ document.getElementById('applyCouponButton')?.addEventListener('click', function
       alert('Invalid coupon code.');
   }
 });
+document.addEventListener("DOMContentLoaded", function () {
+    const cartItemsContainer = document.getElementById("cartItems");
 
+    // Ambil data dari Local Storage
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    if (cart.length === 0) {
+        cartItemsContainer.innerHTML = "<p>Keranjang kosong!</p>";
+    } else {
+        // Render item ke dalam keranjang
+        cart.forEach((item, index) => {
+            const listItem = document.createElement("li");
+            listItem.classList.add("food-item");
+            listItem.innerHTML = `
+                <li class="food-item" data-id="${item.id}">
+                    <img src="assets/${item.image}" alt="${item.title}" width="80" height="80">
+                    <div class="food-item-details">
+                        <span class="food-name">${item.title}</span>
+                        <span class="food-price">${item.price}</span>
+                        <span class="food-category">${item.category}</span>
+                    </div>
+                    <div class="quantity-control">
+                        <button class="qty-btn minus">-</button>
+                        <span class="quantity">1</span>
+                        <button class="qty-btn plus">+</button>
+                    </div>
+                    <span class="item-total">${item.price}</span>
+                    <button class="remove-item" data-index="${index}">Hapus</button>
+                </li>
+
+                <style>
+                .food-item {
+                    display: grid;
+                    grid-template-columns: auto 1fr auto auto;
+                    gap: 1.5rem;
+                    align-items: center;
+                    padding: 1rem;
+                    border-bottom: 1px solid #eee;
+                    }
+
+                    .food-item-details {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.25rem;
+                    }
+
+                    .food-name {
+                    font-weight: 500;
+                    color: #333;
+                    }
+
+                    .food-price {
+                    color: #666;
+                    font-size: 0.9rem;
+                    }
+
+                    .quantity-control {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    }
+
+                    .qty-btn {
+                    width: 30px;
+                    height: 30px;
+                    border: 1px solid #FF0099;
+                    background: white;
+                    color: #FF0099;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.2s ease;
+                    }
+
+                    .qty-btn:hover {
+                    background: #FF0099;
+                    color: white;
+                    }
+
+                    .quantity {
+                    min-width: 30px;
+                    text-align: center;
+                    font-weight: 500;
+                    }
+                </style>
+            `;
+            cartItemsContainer.appendChild(listItem);
+        });
+
+        // Tambahkan event listener untuk tombol hapus
+        document.querySelectorAll(".remove-item").forEach((button) => {
+            button.addEventListener("click", function () {
+                const index = this.getAttribute("data-index");
+                cart.splice(index, 1); // Hapus item dari array
+                localStorage.setItem("cart", JSON.stringify(cart)); // Perbarui Local Storage
+                location.reload(); // Refresh halaman
+            });
+        });
+    }
+});
 document.getElementById("checkoutType").addEventListener("change", optionSelect);
 // Update Payment Info based on checkout type
 function optionSelect() {

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Pengguna - Mie Gacoan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/profil-style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="menu-wrap">
+            <a href="homepage.html" class="logo">
+                <img src="assets/LogoMieGacoan-removebg-preview.png" alt="Mie Gacoan Logo">
+            </a>
+            <div class="menu">
+                <a href="homepage.html" class="menu-item active">Home</a>
+                <a href="about.html" class="menu-item">About</a>
+                <a href="menu.html" class="menu-item">Menu</a>
+                <a href="order.html" class="menu-item">Order</a>
+                <a href="contact.html" class="menu-item">Contact</a>
+            </div>
+            <div class="right-menu">
+                <button class="logout" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <img id="profile-image" src="assets/default-avatar.png" alt="Profile Image">
+            <div>
+                <h2>Nama Pengguna</h2>
+                <p>Email: <span id="user-email">user@example.com</span></p>
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <h3>Ganti Foto Profil</h3>
+            <input type="file" id="image-picker" accept="image/*" onchange="changeImage(event)">
+        </div>
+
+        <div class="profile-section">
+            <h3>Ganti Username</h3>
+            <input type="text" id="new-username" placeholder="Masukkan Username Baru">
+            <button onclick="updateUsername()">Ganti Username</button>
+        </div>
+
+        <div class="profile-section">
+            <h3>Ganti Email</h3>
+            <input type="email" id="new-email" placeholder="Masukkan Email Baru">
+            <button onclick="updateEmail()">Ganti Email</button>
+        </div>
+
+        <div class="order-history">
+            <h3>Riwayat Pemesanan</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>No. Pesanan</th>
+                        <th>Tanggal Pemesanan</th>
+                        <th>Menu</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#12345</td>
+                        <td>2024-11-22</td>
+                        <td>Mie Gacoan Original</td>
+                        <td>Diproses</td>
+                    </tr>
+                    <tr>
+                        <td>#12346</td>
+                        <td>2024-11-20</td>
+                        <td>Mie Gacoan Pedas</td>
+                        <td>Siap Dikirim</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function logout() {
+            // Clear user session or localStorage
+            alert("Anda telah keluar.");
+            window.location.href = 'login.html';
+        }
+
+        function changeImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profile-image').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function updateUsername() {
+            const newUsername = document.getElementById('new-username').value;
+            if (newUsername) {
+                alert("Username berhasil diganti menjadi " + newUsername);
+                // Call your API to update username here
+            }
+        }
+
+        function updateEmail() {
+            const newEmail = document.getElementById('new-email').value;
+            if (newEmail) {
+                alert("Email berhasil diganti menjadi " + newEmail);
+                // Call your API to update email here
+            }
+        }
+    </script>
+</body>
+</html>
