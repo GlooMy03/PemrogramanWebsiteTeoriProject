@@ -11,17 +11,51 @@
         <div class="login-box">
             <h1>Selamat Datang di Gacoan</h1>
             <h2>Login</h2>
-            <form action="#" method="post">
+            <form id="loginForm">
                 <div class="textbox">
                     <input type="text" placeholder="Email" name="Email" required>
                 </div>
                 <div class="textbox">
                     <input type="password" placeholder="Password" name="password" required>
                 </div>
-                <button class="btn" onclick="location.href='homepage.html';">Login</button>
+                <button type="submit" class="btn">Login</button>
             </form>
-            <p>Don't have an account? <a href="#" onclick="location.href='signup.html';">Sign up</a></p>
+            <p>Don't have an account? <a href="signup.html">Sign up</a></p>
         </div>
     </div>
+
+    <script>
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
+        e.preventDefault(); // Cegah form submit default
+
+        const formData = new FormData(this);
+
+        fetch('http://localhost/praktikumXAMPP/Web/PemrogramanWebsiteTeoriProject/BE/login.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('HTTP error! status: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                // Simpan data user di localStorage atau sessionStorage
+                localStorage.setItem('user', JSON.stringify(data.user));
+                // Redirect ke homepage
+                window.location.href = 'homepage.html';
+            } else {
+                alert(data.error || 'Login gagal.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan saat login.');
+        });
+    });
+    </script>
 </body>
 </html>

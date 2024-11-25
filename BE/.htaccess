@@ -1,0 +1,14 @@
+# Enable rewrite engine
+RewriteEngine On
+
+# Allow all methods for PHP files
+<FilesMatch "\.php$">
+    Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type"
+</FilesMatch>
+
+# Allow POST method
+<IfModule mod_rewrite.c>
+    RewriteCond %{REQUEST_METHOD} POST
+    RewriteRule ^ - [L]
+</IfModule>

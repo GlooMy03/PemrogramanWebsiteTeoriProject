@@ -7,24 +7,60 @@
     <link rel="stylesheet" href="../css/signup_style.css">
 </head>
 <body>
-    <div class="signuo-container">
+    <div class="signup-container">
         <div class="signup-box">
             <h1>Selamat Datang di Gacoan</h1>
             <h2>Sign Up</h2>
-            <form action="#" method="post">
+            <form id="registerForm" method="POST" action="../BE/register.php">
                 <div class="textbox">
                     <input type="text" placeholder="Username" name="Username" required>
                 </div>
                 <div class="textbox">
-                    <input type="text" placeholder="Email" name="Email" required>
+                    <input type="email" placeholder="Email" name="Email" required>
                 </div>
                 <div class="textbox">
                     <input type="password" placeholder="Password" name="password" required>
                 </div>
-                <button class="btn" onclick="location.href='login.html';">Sign Up</button>
+                <button type="submit" class="btn" name="submit">Sign Up</button>
             </form>
-            <p>Have an account? <a href="#" onclick="location.href='login.html';">Login</a></p>
+            
+            
+            <p>Have an account? <a href="login.html">Login</a></p>
         </div>
     </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Mencegah submit form secara default
+        
+            const formData = new FormData(this);
+        
+            // Kirim form data menggunakan fetch
+            fetch('http://localhost/praktikumXAMPP/Web/PemrogramanWebsiteTeoriProject/BE/register.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                // Periksa apakah respons dari server berhasil
+                if (!response.ok) {
+                    throw new Error('HTTP error! status: ' + response.status);
+                }
+                return response.json(); // Parsing JSON
+            })
+            .then(data => {
+                if (data.success) {
+                    alert(data.message); // Tampilkan pesan sukses
+                    window.location.href = 'login.html'; // Redirect ke login
+                } else {
+                    alert(data.error || 'Terjadi kesalahan saat registrasi.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat menghubungi server.');
+            });
+        });
+        
+    </script>
 </body>
 </html>
