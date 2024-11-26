@@ -3,18 +3,15 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Include file koneksi database
 include 'db.php';
 
-// Header untuk mendukung CORS dan JSON
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Content-Type');
 header('Content-Type: application/json');
 
-// Pastikan metode request adalah POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-  http_response_code(405); // Method Not Allowed
+  http_response_code(405);
   echo json_encode(['success' => false, 'error' => 'Method not allowed. Please use POST.']);
   exit();
 }
@@ -53,7 +50,7 @@ if (isset($_POST['Username'], $_POST['Email'], $_POST['password'])) {
       echo json_encode(['success' => false, 'error' => 'Gagal menambahkan user.']);
     }
   } catch (PDOException $e) {
-    http_response_code(500); // Internal Server Error
+    http_response_code(500);
     echo json_encode(['success' => false, 'error' => 'Database Error: ' . $e->getMessage()]);
   }
 } else {
