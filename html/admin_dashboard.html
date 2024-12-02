@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mie Gacoan - Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/admin_style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="menu-wrap">
+            <a href="index.html" class="logo">
+                <img src="assets/LogoMieGacoan-removebg-preview.png" alt="Mie Gacoan Logo">
+            </a>
+            <div class="menu">
+                <a href="admin_dashboard.html" class="menu-item active">Dashboard</a>
+                <a href="admin_menu.html" class="menu-item">Menu Management</a>
+                <a href="admin_orders.html" class="menu-item">Orders</a>
+                <a href="admin_users.html" class="menu-item">Users</a>
+            </div>
+            <div class="right-menu">
+                <button class="profile" onclick="location.href='admin_profile.html';">Profile</button>
+                <button class="logout">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="admin-dashboard">
+        <section class="dashboard-header">
+            <h1>Admin Dashboard</h1>
+            <p>Welcome, Admin! Here's an overview of Mie Gacoan's performance.</p>
+        </section>
+
+        <!-- Dashboard Cards -->
+        <section class="dashboard-cards">
+            <div class="dashboard-card">
+                <h3>Total Orders</h3>
+                <div class="card-content">
+                    <span class="big-number">1,234</span>
+                    <span class="percentage-change positive">+12.5%</span>
+                </div>
+            </div>
+            <div class="dashboard-card">
+                <h3>Total Revenue</h3>
+                <div class="card-content">
+                    <span class="big-number">Rp 250,000,000</span>
+                    <span class="percentage-change positive">+8.2%</span>
+                </div>
+            </div>
+            <div class="dashboard-card">
+                <h3>New Customers</h3>
+                <div class="card-content">
+                    <span class="big-number">456</span>
+                    <span class="percentage-change positive">+15.7%</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Orders -->
+        <section class="recent-orders">
+            <h2>Recent Orders</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Items</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#12345</td>
+                        <td>Alfi Aulia</td>
+                        <td>Mie Pedas, Es Teh</td>
+                        <td>Rp 35,000</td>
+                        <td><span class="status completed">Completed</span></td>
+                        <td>
+                            <button class="action-btn view">View</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#12346</td>
+                        <td>Ichsan Putra</td>
+                        <td>Dimsum Spesial</td>
+                        <td>Rp 30,000</td>
+                        <td><span class="status pending">Pending</span></td>
+                        <td>
+                            <button class="action-btn view">View</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="quick-actions">
+            <h2>Quick Actions</h2>
+            <div class="action-buttons">
+                <button class="quick-action" onclick="location.href='admin_menu.html';">
+                    <img src="assets/menu-icon.png" alt="Manage Menu">
+                    <span>Manage Menu</span>
+                </button>
+                <button class="quick-action" onclick="location.href='admin_orders.html';">
+                    <img src="assets/orders-icon.png" alt="View Orders">
+                    <span>View Orders</span>
+                </button>
+                <button class="quick-action" onclick="location.href='admin_users.html';">
+                    <img src="assets/users-icon.png" alt="User Management">
+                    <span>User Management</span>
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <div class="footer-logo">
+                    <img src="assets/LogoMieGacoan-removebg-preview.png" alt="Mie Gacoan">
+                </div>
+                <p>Admin Dashboard - Mie Gacoan Management System</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <a href="admin_dashboard.html">Dashboard</a>
+                <a href="admin_menu.html">Menu</a>
+                <a href="admin_orders.html">Orders</a>
+                <a href="admin_users.html">Users</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

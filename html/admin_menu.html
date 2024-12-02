@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mie Gacoan - Admin Menu Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/admin_menu_style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="menu-wrap">
+            <a href="index.html" class="logo">
+                <img src="assets/LogoMieGacoan-removebg-preview.png" alt="Mie Gacoan Logo">
+            </a>
+            <div class="menu">
+                <a href="admin_dashboard.html" class="menu-item">Dashboard</a>
+                <a href="admin_menu.html" class="menu-item active">Menu Management</a>
+                <a href="admin_orders.html" class="menu-item">Orders</a>
+                <a href="admin_users.html" class="menu-item">Users</a>
+            </div>
+            <div class="right-menu">
+                <button class="profile" onclick="location.href='admin_profile.html';">Profile</button>
+                <button class="logout">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="admin-menu">
+        <section class="menu-header">
+            <h1>Menu Management</h1>
+            <p>Manage the menu items and stock levels for Mie Gacoan.</p>
+        </section>
+
+        <!-- Menu Items -->
+        <section class="menu-items">
+            <div class="menu-item-header">
+                <h2>Menu Items</h2>
+                <button class="add-menu-item" onclick="openAddModal()">
+                    Add New Menu Item
+                </button>
+            </div>
+            <table class="menu-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Description</th>
+                        <th>Image</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="menu-table-body">
+                    <!-- Menu items will be dynamically added here -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Add/Edit Menu Item Modal -->
+        <div class="modal" id="menu-modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeModal()">&times;</span>
+                <h2 id="modal-title">Add New Menu Item</h2>
+                <form id="menu-form">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category:</label>
+                        <select id="category" name="category" required>
+                            <option value="">Select Category</option>
+                            <option value="Noodles">Noodles</option>
+                            <option value="Dimsum">Dimsum</option>
+                            <option value="Beverages">Beverages</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Price:</label>
+                        <input type="number" id="price" name="price" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="stock">Stock:</label>
+                        <input type="number" id="stock" name="stock" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description:</label>
+                        <textarea id="description" name="description" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="image">Image:</label>
+                        <input type="text" id="image" name="image" required>
+                    </div>
+                    <button type="submit" id="save-button">Save</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <div class="footer-logo">
+                    <img src="assets/LogoMieGacoan-removebg-preview.png" alt="Mie Gacoan">
+                </div>
+                <p>Admin Dashboard - Mie Gacoan Management System</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <a href="admin_dashboard.html">Dashboard</a>
+                <a href="admin_menu.html">Menu</a>
+                <a href="admin_orders.html">Orders</a>
+                <a href="admin_users.html">Users</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/admin_menu.js"></script>
+</body>
+</html>
