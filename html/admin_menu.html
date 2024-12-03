@@ -97,39 +97,125 @@
                         <input type="file" id="image" name="image" accept="image/*" required>
                     </div>
                     <button type="submit" id="save-button">Save</button>
+                    <input type="hidden" id="menu-id" name="menu-id" value="">
                 </form>
             </div>
         </div>
         <script>
-            function openAddModal() {
-                document.getElementById('menu-modal').style.display = 'block';
+            const apiUrl = "http://localhost/php_folder_praktikum/teoriweb/PemrogramanWebsiteTeoriProject/BE/admin_menu.php";
+    
+            // Fungsi untuk mendapatkan semua menu dari API
+            // Perbaikan untuk fungsi getMenu()
+            function getMenu() {
+                fetch(apiUrl, {
+                    method: 'GET'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // PENTING: Ganti selector sesuai dengan ID yang benar di HTML
+                    let menuTableBody = document.getElementById("menu-table-body");
+                    menuTableBody.innerHTML = ""; // Clear previous rows
+
+                    data.forEach(menu => {
+                        let row = document.createElement("tr");
+                        row.innerHTML = `
+                            <td>${menu.id_menu}</td>
+                            <td>${menu.nama_menu}</td>
+                            <td>${menu.kategori}</td>
+                            <td>${menu.harga}</td>
+                            <td>${menu.stok}</td>
+                            <td>${menu.deskripsi}</td>
+                            <td>
+                                ${menu.gambar ? 
+                                    `<img src="data:image/jpeg;base64,${btoa(String.fromCharCode.apply(null, new Uint8Array(menu.gambar.data)))}" width="100" />` 
+                                    : 'No Image'
+                                }
+                            </td>
+                            <td>
+                                <button onclick="editMenu(${menu.id_menu})">Edit</button>
+                                <button onclick="deleteMenu(${menu.id_menu})">Delete</button>
+                            </td>
+                        `;
+                        menuTableBody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
             }
 
-            function closeModal() {
-                document.getElementById('menu-modal').style.display = 'none';
-            }
-
-            document.getElementById('menu-form').addEventListener('submit', function (e) {
+            // Perbaikan untuk submit form
+            document.getElementById("menu-form").addEventListener("submit", function(e) {
                 e.preventDefault();
-
+                
+                // Ambil nilai dari form
                 const formData = new FormData(this);
 
-                fetch('http://localhost/php_folder_praktikum/teoriweb/PemrogramanWebsiteTeoriProject/BE/admin_menu.php', {
+                fetch(apiUrl, {
                     method: 'POST',
                     body: formData
                 })
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === 'success') {
-                        alert('Menu item saved successfully!');
-                        closeModal();
-                        location.reload(); // Refresh page to show updated data
+                        alert('Menu berhasil ditambahkan');
+                        getMenu(); // Refresh daftar menu
+                        closeModal(); // Tutup modal
                     } else {
-                        alert('Error: ' + data.message);
+                        alert('Gagal menambahkan menu: ' + data.message);
                     }
                 })
-                .catch(error => console.error('Error:', error));
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan');
+                });
             });
+
+            // Tambahkan fungsi-fungsi modal
+            function openAddModal() {
+                document.getElementById('menu-modal').style.display = 'block';
+                document.getElementById('modal-title').textContent = 'Add New Menu Item';
+                document.getElementById('menu-form').reset();
+            }
+
+            function closeModal() {
+                document.getElementById('menu-modal').style.display = 'none';
+            }
+
+            // Tambahkan fungsi edit dan delete
+            function editMenu(id) {
+                // Implementasi edit menu
+                // Buka modal, isi data dengan fetch berdasarkan ID
+            }
+
+            function deleteMenu(id) {
+                if(confirm('Apakah Anda yakin ingin menghapus menu ini?')) {
+                    fetch(apiUrl, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `id_menu=${id}`
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            alert('Menu berhasil dihapus');
+                            getMenu(); // Refresh daftar menu
+                        } else {
+                            alert('Gagal menghapus menu: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Terjadi kesalahan');
+                    });
+                }
+            }
+
+            // Panggil getMenu saat halaman dimuat
+            window.onload = getMenu;
+
         </script>
     </main>
 
