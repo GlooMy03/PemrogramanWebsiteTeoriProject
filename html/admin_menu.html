@@ -94,12 +94,43 @@
                     </div>
                     <div class="form-group">
                         <label for="image">Image:</label>
-                        <input type="text" id="image" name="image" required>
+                        <input type="file" id="image" name="image" accept="image/*" required>
                     </div>
                     <button type="submit" id="save-button">Save</button>
                 </form>
             </div>
         </div>
+        <script>
+            function openAddModal() {
+                document.getElementById('menu-modal').style.display = 'block';
+            }
+
+            function closeModal() {
+                document.getElementById('menu-modal').style.display = 'none';
+            }
+
+            document.getElementById('menu-form').addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const formData = new FormData(this);
+
+                fetch('http://localhost/php_folder_praktikum/teoriweb/PemrogramanWebsiteTeoriProject/BE/admin_menu.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert('Menu item saved successfully!');
+                        closeModal();
+                        location.reload(); // Refresh page to show updated data
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        </script>
     </main>
 
     <!-- Footer -->

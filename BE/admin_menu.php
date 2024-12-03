@@ -24,7 +24,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $price = $_POST["price"];
   $stock = $_POST["stock"];
   $description = $_POST["description"];
-  $image = $_POST["image"];
+  $image = "";
+
+  // Proses upload gambar
+  if (isset($_FILES["image"]) && $_FILES["image"]["error"] == 0) {
+    $targetDir = "uploads/"; // Folder tujuan
+    if (!file_exists($targetDir)) {
+        mkdir($targetDir, 0777, true); // Buat folder jika belum ada
+    }
+    $imagePath = $targetDir . basename($_FILES["image"]["name"]);
+    if (!move_uploaded_file($_FILES["image"]["tmp_name"], $imagePath)) {
+        echo json_encode(["status" => "error", "message" => "Failed to upload image."]);
+        exit;
+    }
+  }
+
 
   switch ($action) {
     case "create":
