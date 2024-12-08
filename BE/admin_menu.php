@@ -1,75 +1,87 @@
 <?php
-// Database connection details
-$servername = "localhost";
-$username = 'root';
-$password = '';
-$dbname = 'web_gacoan';
+require_once 'db.php';
 
+// Set header untuk JSON response
+// Header untuk mendukung JSON dan CORS
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST');
+header('Access-Control-Allow-Headers: Content-Type');
+header('Content-Type: application/json');
 
+// Fungsi untuk mengambil data menu
+function getMenuItems($conn)
+{
+  $query = "SELECT * FROM menu";
+  $stmt = $conn->prepare($query);
+  $stmt->execute();
+  $menuItems = $stmt->fetchAll(PDO::FETCH_ASSOC);  // Mengambil semua hasil dalam bentuk array asosiatif
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
+  return $menuItems;
 }
 
-// Handle CRUD operations
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $action = $_POST["action"];
-  $id = $_POST["id"] ?? null;
-  $name = $_POST["name"];
-  $category = $_POST["category"];
-  $price = $_POST["price"];
-  $stock = $_POST["stock"];
-  $description = $_POST["description"];
-  $image = "";
+// Fungsi untuk menambah atau memperbarui menu
+function addOrUpdateMenuItem($conn)
+{
+  $id_menu = $_POST['id_menu'] ?? null;
+  $nama_menu = $_POST['nama_menu'];
+  $kategori = $_POST['kategori'];
+  $harga = $_POST['harga'];
+  $stok = $_POST['stok'];
+  $deskripsi = $_POST['deskripsi'];
+  $gambar = $_FILES['gambar']['name'] ?? '';
 
-  // Proses upload gambar
-  if (isset($_FILES["image"]) && $_FILES["image"]["error"] == 0) {
-    $targetDir = "uploads/"; // Folder tujuan
-    if (!file_exists($targetDir)) {
-        mkdir($targetDir, 0777, true); // Buat folder jika belum ada
-    }
-    $imagePath = $targetDir . basename($_FILES["image"]["name"]);
-    if (!move_uploaded_file($_FILES["image"]["tmp_name"], $imagePath)) {
-        echo json_encode(["status" => "error", "message" => "Failed to upload image."]);
-        exit;
-    }
+  if ($gambar) {
+    $targetDir = "uploads/";
+    $targetFile = $targetDir . basename($gambar);
+    move_uploaded_file($_FILES['gambar']['tmp_name'], $targetFile);
   }
 
-
-  switch ($action) {
-    case "create":
-      $sql = "INSERT INTO menu (name, category, price, stock, description, image) VALUES ('$name', '$category', $price, $stock, '$description', '$image')";
-      break;
-    case "update":
-      $sql = "UPDATE menu SET name = '$name', category = '$category', price = $price, stock = $stock, description = '$description', image = '$image' WHERE id = $id";
-      break;
-    case "delete":
-      $sql = "DELETE FROM menu WHERE id = $id";
-      break;
-    default:
-      $sql = "SELECT * FROM menu";
-  }
-
-  if ($action !== "read") {
-    if ($conn->query($sql) === TRUE) {
-      echo json_encode(["status" => "success"]);
-    } else {
-      echo json_encode(["status" => "error", "message" => $conn->error]);
-    }
+  if ($id_menu) {
+    // Update existing menu
+    $query = "UPDATE menu SET nama_menu=:nama_menu, kategori=:kategori, harga=:harga, stok=:stok, deskripsi=:deskripsi, gambar=:gambar WHERE id_menu=:id_menu";
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':id_menu', $id_menu);
   } else {
-    $result = $conn->query($sql);
-    $data = [];
-    if ($result->num_rows > 0) {
-      while ($row = $result->fetch_assoc()) {
-        $data[] = $row;
-      }
-    }
-    echo json_encode($data);
+    // Insert new menu
+    $query = "INSERT INTO menu (nama_menu, kategori, harga, stok, deskripsi, gambar) VALUES (:nama_menu, :kategori, :harga, :stok, :deskripsi, :gambar)";
+    $stmt = $conn->prepare($query);
+  }
+
+  // Bind parameters
+  $stmt->bindParam(':nama_menu', $nama_menu);
+  $stmt->bindParam(':kategori', $kategori);
+  $stmt->bindParam(':harga', $harga);
+  $stmt->bindParam(':stok', $stok);
+  $stmt->bindParam(':deskripsi', $deskripsi);
+  $stmt->bindParam(':gambar', $gambar);
+
+  if ($stmt->execute()) {
+    return ['status' => 'success', 'message' => 'Menu item saved successfully'];
+  } else {
+    return ['status' => 'error', 'message' => $stmt->errorInfo()];
   }
 }
 
-$conn->close();
+// Fungsi untuk menghapus menu
+function deleteMenuItem($conn)
+{
+  $id_menu = $_GET['id_menu'];
+  $query = "DELETE FROM menu WHERE id_menu = :id_menu";
+  $stmt = $conn->prepare($query);
+  $stmt->bindParam(':id_menu', $id_menu);
+
+  if ($stmt->execute()) {
+    return ['status' => 'success', 'message' => 'Menu item deleted successfully'];
+  } else {
+    return ['status' => 'error', 'message' => $stmt->errorInfo()];
+  }
+}
+
+// Cek method request
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+  echo json_encode(getMenuItems($conn));
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  echo json_encode(addOrUpdateMenuItem($conn));
+} elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+  echo json_encode(deleteMenuItem($conn));
+}

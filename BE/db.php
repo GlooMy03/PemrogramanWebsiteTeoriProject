@@ -1,12 +1,15 @@
 <?php
-$host = 'localhost';
-$dbname = 'web_gacoan';
-$username = 'root';
-$password = '';
+$servername = "localhost";
+$username = "root";  // Ganti dengan username database Anda
+$password = "";  // Ganti dengan password database Anda
+$dbname = "web_gacoan";  // Ganti dengan nama database Anda
 
 try {
-  $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-  $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  // Koneksi menggunakan PDO
+  $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+  // Set mode error PDO untuk menampilkan exception
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-  die("Koneksi gagal: " . $e->getMessage());
+  echo "Connection failed: " . $e->getMessage();
+  exit();
 }
