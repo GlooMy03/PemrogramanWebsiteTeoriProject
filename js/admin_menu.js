@@ -33,7 +33,7 @@ function fetchMenuItems() {
                     <td>${item.stok}</td>
                     <td>${item.deskripsi || 'Tidak ada deskripsi'}</td>
                     <td>
-                        ${item.gambar ? `<img src="uploads/${item.gambar}" width="50" alt="${item.nama_menu}">` : 'Tidak ada gambar'}
+                        ${item.gambar ? `<img src="../BE/uploads/${item.gambar}" width="50" alt="${item.nama_menu}">` : 'Tidak ada gambar'}
                     </td>
                     <td>
                         <button onclick="editMenu(${item.id_menu})">Edit</button>
