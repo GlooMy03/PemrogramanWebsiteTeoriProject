@@ -26,7 +26,7 @@ if (isset($_POST['Email'], $_POST['password'])) {
 
   try {
     // Ambil data user berdasarkan email
-    $stmt = $pdo->prepare("SELECT * FROM Users WHERE email = ?");
+    $stmt = $conn->prepare("SELECT * FROM Users WHERE email = ?");
     $stmt->execute([$email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 

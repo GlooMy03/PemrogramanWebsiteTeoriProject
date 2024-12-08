@@ -24,7 +24,7 @@ if (isset($_POST['Username'], $_POST['Email'], $_POST['password'])) {
 
   try {
     // Periksa apakah username sudah ada
-    $stmt = $pdo->prepare("SELECT id_user FROM Users WHERE username = ?");
+    $stmt = $conn->prepare("SELECT id_user FROM Users WHERE username = ?");
     $stmt->execute([$username]);
     if ($stmt->rowCount() > 0) {
       echo json_encode(['success' => false, 'error' => 'Username sudah digunakan']);
@@ -32,7 +32,7 @@ if (isset($_POST['Username'], $_POST['Email'], $_POST['password'])) {
     }
 
     // Periksa apakah email sudah terdaftar
-    $stmt = $pdo->prepare("SELECT id_user FROM Users WHERE email = ?");
+    $stmt = $conn->prepare("SELECT id_user FROM Users WHERE email = ?");
     $stmt->execute([$email]);
     if ($stmt->rowCount() > 0) {
       echo json_encode(['success' => false, 'error' => 'Email sudah terdaftar']);
@@ -43,7 +43,7 @@ if (isset($_POST['Username'], $_POST['Email'], $_POST['password'])) {
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
     // Tambahkan user baru ke database
-    $stmt = $pdo->prepare("INSERT INTO Users (username, email, password, role) VALUES (?, ?, ?, 'Customer')");
+    $stmt = $conn->prepare("INSERT INTO Users (username, email, password, role) VALUES (?, ?, ?, 'Customer')");
     if ($stmt->execute([$username, $email, $hashed_password])) {
       echo json_encode(['success' => true, 'message' => 'Registrasi berhasil!']);
     } else {
