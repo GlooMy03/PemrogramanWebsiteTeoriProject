@@ -34,27 +34,25 @@
             method: 'POST',
             body: formData
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('HTTP error! status: ' + response.status);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.success) {
-                alert(data.message);
-                // Simpan data user di localStorage atau sessionStorage
-                localStorage.setItem('user', JSON.stringify(data.user));
-                // Redirect ke homepage
-                window.location.href = 'index.html';
-            } else {
-                alert(data.error || 'Login gagal.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Terjadi kesalahan saat login.');
-        });
+        .then(response => response.json())
+.then(data => {
+    if (data.success) {
+        alert(data.message);
+        // Simpan data user di localStorage atau sessionStorage
+        localStorage.setItem('user', JSON.stringify(data.user));
+
+        // Cek data.user.role untuk pengalihan yang tepat
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user.role === 'Admin') {
+            window.location.href = 'admin_dashboard.html'; // Arahkan ke admin_dashboard.html
+        } else {
+            window.location.href = 'index.html'; // Arahkan ke index.html
+        }
+    } else {
+        alert(data.error || 'Login gagal.');
+    }
+})
+
     });
     </script>
 </body>

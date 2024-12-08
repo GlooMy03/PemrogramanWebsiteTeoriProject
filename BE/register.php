@@ -39,12 +39,15 @@ if (isset($_POST['Username'], $_POST['Email'], $_POST['password'])) {
       exit();
     }
 
+    // Tentukan role (admin atau customer)
+    $role = ($username == 'admin') ? 'admin' : 'Customer';
+
     // Hash password
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
     // Tambahkan user baru ke database
-    $stmt = $conn->prepare("INSERT INTO Users (username, email, password, role) VALUES (?, ?, ?, 'Customer')");
-    if ($stmt->execute([$username, $email, $hashed_password])) {
+    $stmt = $conn->prepare("INSERT INTO Users (username, email, password, role) VALUES (?, ?, ?, ?)");
+    if ($stmt->execute([$username, $email, $hashed_password, $role])) {
       echo json_encode(['success' => true, 'message' => 'Registrasi berhasil!']);
     } else {
       echo json_encode(['success' => false, 'error' => 'Gagal menambahkan user.']);

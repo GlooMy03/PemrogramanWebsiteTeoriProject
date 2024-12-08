@@ -33,7 +33,7 @@ if (isset($_POST['Email'], $_POST['password'])) {
     if ($user) {
       // Periksa apakah password cocok
       if (password_verify($password, $user['password'])) {
-        echo json_encode([
+        $response = [
           'success' => true,
           'message' => 'Login berhasil!',
           'user' => [
@@ -42,7 +42,17 @@ if (isset($_POST['Email'], $_POST['password'])) {
             'email' => $user['email'],
             'role' => $user['role']
           ]
-        ]);
+        ];
+
+        // Jika role admin, redirect ke admin_dashboard.html
+        if ($user['role'] === 'admin') {
+          $response['redirect'] = 'admin_dashboard.html';
+        } else {
+          // Jika bukan admin, redirect ke index.html
+          $response['redirect'] = 'index.html';
+        }
+
+        echo json_encode($response);
       } else {
         echo json_encode(['success' => false, 'error' => 'Password salah.']);
       }
