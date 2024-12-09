@@ -237,3 +237,63 @@ footer {
 .footer-links a:hover {
   color: #ff6b00;
 }
+
+
+/* Gaya untuk modal */
+#delete-confirmation-modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+#delete-confirmation-modal .modal-content {
+  background-color: white;
+  margin: 15% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#delete-confirmation-modal h2 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+#delete-confirmation-modal p {
+  margin-bottom: 20px;
+  color: #666;
+}
+
+#delete-confirmation-modal button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#delete-confirmation-modal #cancel-delete {
+  background-color: #6c757d;
+  color: white;
+}
+
+#delete-confirmation-modal #cancel-delete:hover {
+  background-color: #555;
+}
+
+#delete-confirmation-modal #confirm-delete {
+  background-color: #dc3545;
+  color: white;
+}
+
+#delete-confirmation-modal #confirm-delete:hover {
+  background-color: #bd2130;
+}
