@@ -57,7 +57,7 @@ function addOrUpdateUser($conn)
             return ['status' => 'error', 'message' => implode(', ', $validationErrors)];
         }
 
-        // Proses upload foto profil
+        // upload foto profil
         if ($foto_profil) {
             $targetDir = "PP/";
             $fileExtension = strtolower(pathinfo($foto_profil, PATHINFO_EXTENSION));
