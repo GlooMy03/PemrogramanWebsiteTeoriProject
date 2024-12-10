@@ -10,7 +10,7 @@ body {
 /* Navigation Styles */
 .nav {
   background-color: white;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 15px 0;
 }
 
@@ -65,7 +65,7 @@ body {
   color: white;
 }
 
-/* Admin Menu Styles */
+/* Main Content Styles */
 .admin-menu {
   max-width: 1200px;
   margin: 0 auto;
@@ -77,8 +77,21 @@ body {
 }
 
 .menu-header h1 {
-  margin-bottom: 10px;
   font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.menu-header p {
+  color: #666;
+}
+
+.menu-items {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  padding: 20px;
 }
 
 .menu-item-header {
@@ -88,78 +101,105 @@ body {
   margin-bottom: 20px;
 }
 
+.menu-item-header h2 {
+  font-size: 1.5rem;
+  color: #333;
+}
+
 .add-menu-item {
-  background-color: #ff6b00;
+  background-color: #4CAF50;
   color: white;
   border: none;
   padding: 10px 15px;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
+.add-menu-item:hover {
+  background-color: #45a049;
+}
+
+/* Table Styles */
 .menu-table {
   width: 100%;
   border-collapse: collapse;
-  background-color: white;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  border-radius: 10px;
 }
 
-.menu-table th {
-  background-color: #f4f4f4;
+.menu-table th, .menu-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
   text-align: left;
-  padding: 12px;
-  border-bottom: 1px solid #ddd;
 }
 
-.menu-table td {
-  padding: 12px;
-  border-bottom: 1px solid #ddd;
+.menu-table thead {
+  background-color: #f2f2f2;
+  font-weight: 600;
+}
+
+.menu-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.menu-table tr:hover {
+  background-color: #f5f5f5;
 }
 
 .menu-table td img {
-  max-width: 100px;
-  max-height: 100px;
-}
-
-.action-button {
-  background-color: #f0f0f0;
-  border: none;
-  padding: 5px 10px;
+  max-width: 50px;
+  max-height: 50px;
+  object-fit: cover;
   border-radius: 5px;
-  cursor: pointer;
+}
+
+.menu-table td button {
   margin-right: 5px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.action-button.edit {
-  background-color: #ff6b00;
+.menu-table td button:first-child {
+  background-color: #2196F3;
   color: white;
 }
 
-.action-button.delete {
-  background-color: #F44336;
+.menu-table td button:first-child:hover {
+  background-color: #1976D2;
+}
+
+.menu-table td button:last-child {
+  background-color: #f44336;
   color: white;
+}
+
+.menu-table td button:last-child:hover {
+  background-color: #d32f2f;
 }
 
 /* Modal Styles */
 .modal {
   display: none;
   position: fixed;
-  z-index: 1;
+  z-index: 1000;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0,0,0,0.4);
 }
 
 .modal-content {
   background-color: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  max-width: 600px;
+  margin: 10% auto;
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 500px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  position: relative;
 }
 
 .close-button {
@@ -167,6 +207,7 @@ body {
   float: right;
   font-size: 28px;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .close-button:hover,
@@ -176,32 +217,44 @@ body {
   cursor: pointer;
 }
 
+#menu-modal h2 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.5rem;
+}
+
 .form-group {
   margin-bottom: 15px;
 }
 
 .form-group label {
   display: block;
-  font-weight: 500;
   margin-bottom: 5px;
+  font-weight: 500;
 }
 
-.form-group input,
-.form-group textarea,
-.form-group select {
+.form-group input, 
+.form-group select, 
+.form-group textarea {
   width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
 #save-button {
-  background-color: #ff6b00;
+  width: 100%;
+  padding: 12px;
+  background-color: #4CAF50;
   color: white;
   border: none;
-  padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#save-button:hover {
+  background-color: #45a049;
 }
 
 /* Footer Styles */
@@ -238,62 +291,29 @@ footer {
   color: #ff6b00;
 }
 
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .menu-wrap {
+      flex-direction: column;
+      gap: 15px;
+  }
 
-/* Gaya untuk modal */
-#delete-confirmation-modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5);
-}
+  .menu, .right-menu {
+      flex-direction: column;
+      align-items: center;
+  }
 
-#delete-confirmation-modal .modal-content {
-  background-color: white;
-  margin: 15% auto;
-  padding: 20px;
-  border-radius: 8px;
-  width: 400px;
-  text-align: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+  .menu-table {
+      font-size: 0.9rem;
+  }
 
-#delete-confirmation-modal h2 {
-  margin-bottom: 15px;
-  color: #333;
-}
+  .menu-table td, .menu-table th {
+      padding: 8px;
+  }
 
-#delete-confirmation-modal p {
-  margin-bottom: 20px;
-  color: #666;
-}
-
-#delete-confirmation-modal button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-#delete-confirmation-modal #cancel-delete {
-  background-color: #6c757d;
-  color: white;
-}
-
-#delete-confirmation-modal #cancel-delete:hover {
-  background-color: #555;
-}
-
-#delete-confirmation-modal #confirm-delete {
-  background-color: #dc3545;
-  color: white;
-}
-
-#delete-confirmation-modal #confirm-delete:hover {
-  background-color: #bd2130;
+  .modal-content {
+      margin: 20% auto;
+      width: 90%;
+      max-width: 95%;
+  }
 }

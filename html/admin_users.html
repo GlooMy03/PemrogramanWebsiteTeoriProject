@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mie Gacoan - Admin Dashboard</title>
+    <title>Mie Gacoan - Admin User Management</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/admin_users_style.css">
-    <script src="../js/admin_users.js"></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -28,29 +27,69 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <main class="admin-dashboard">
-        <section class="dashboard-header">
+    <main class="admin-users">
+        <section class="users-header">
             <h1>User Management</h1>
-            <p>Welcome, Admin! Manage users effectively here.</p>
+            <p>Manage user accounts and their roles in the Mie Gacoan Management System.</p>
         </section>
 
-        <section class="user-items">
+        <section class="users-section">
+            <div class="users-header">
+                <h2>User List</h2>
+                <button class="add-user-btn" onclick="openAddModal()">Add New User</button>
+            </div>
             <table class="users-table">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Username</th>
                         <th>Email</th>
-                        <th>Password</th>
+                        <th>Role</th>
+                        <th>Profile Picture</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody id="user-table-body">
+                <tbody id="users-table-body">
                     <!-- Users will be dynamically added here -->
                 </tbody>
             </table>
         </section>
+
+        <!-- User Modal -->
+        <div class="modal" id="user-modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeModal()">&times;</span>
+                <h2 id="modal-title">Add New User</h2>
+                <form id="user-form" enctype="multipart/form-data">
+                    <input type="hidden" id="user-id" name="id_user">
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="role">Role:</label>
+                        <select id="role" name="role" required>
+                            <option value="Customer">Customer</option>
+                            <option value="Admin">Admin</option>
+                            <option value="Staff">Staff</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="foto_profil">Profile Picture:</label>
+                        <input type="file" id="foto_profil" name="foto_profil" accept="image/*">
+                    </div>
+                    <button type="submit" id="save-button">Save</button>
+                </form>
+            </div>
+        </div>
     </main>
 
     <!-- Footer -->
@@ -71,5 +110,6 @@
             </div>
         </div>
     </footer>
+    <script src="../js/admin_users.js"></script>
 </body>
 </html>

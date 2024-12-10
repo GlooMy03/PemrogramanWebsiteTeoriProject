@@ -3,11 +3,9 @@ require_once 'db.php';
 
 // Set header untuk JSON response
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: POST, DELETE, GET');
+header('Access-Control-Allow-Methods: POST, DELETE, GET, PUT');
 header('Access-Control-Allow-Headers: Content-Type');
 header('Content-Type: application/json');
-
-
 
 // Fungsi untuk validasi input
 function validateInput($data)
@@ -18,12 +16,12 @@ function validateInput($data)
         $errors[] = "Username tidak boleh kosong";
     }
 
-    if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-        $errors[] = "Format email tidak valid";
+    if (empty($data['email'])) {
+        $errors[] = "Email tidak boleh kosong";
     }
 
-    if (strlen($data['password']) < 6) {
-        $errors[] = "Password harus memiliki setidaknya 6 karakter";
+    if (empty($data['password'])) {
+        $errors[] = "Password tidak boleh kosong";
     }
 
     return $errors;
@@ -33,7 +31,7 @@ function validateInput($data)
 function getUsers($conn)
 {
     try {
-        $query = "SELECT id_user, username, email, password FROM users ORDER BY id_user DESC"; // Pilih hanya kolom yang diperlukan
+        $query = "SELECT * FROM users ORDER BY id_user DESC";
         $stmt = $conn->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -46,12 +44,12 @@ function getUsers($conn)
 function addOrUpdateUser($conn)
 {
     try {
-        // Ambil data dari form
         $id_user = $_POST['id_user'] ?? null;
         $username = $_POST['username'];
         $email = $_POST['email'];
-        $password = $_POST['password'] ?? '';  // Password baru (kosong jika tidak ada perubahan)
+        $password = $_POST['password'];
         $role = $_POST['role'] ?? 'Customer';
+        $foto_profil = $_FILES['foto_profil']['name'] ?? '';
 
         // Validasi input
         $validationErrors = validateInput($_POST);
@@ -59,53 +57,59 @@ function addOrUpdateUser($conn)
             return ['status' => 'error', 'message' => implode(', ', $validationErrors)];
         }
 
-        // Jika ID pengguna ada, berarti kita ingin update, bukan insert
-        if ($id_user) {
-            // Ambil password lama untuk tetap disimpan jika tidak ada perubahan password
-            $query = "SELECT password FROM users WHERE id_user = :id_user";
-            $stmt = $conn->prepare($query);
-            $stmt->bindParam(':id_user', $id_user);
-            $stmt->execute();
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        // Proses upload foto profil
+        if ($foto_profil) {
+            $targetDir = "PP/";
+            $fileExtension = strtolower(pathinfo($foto_profil, PATHINFO_EXTENSION));
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
 
-            // Jika password baru diberikan, hash dan gunakan password baru
-            if (!empty($password)) {
-                $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-            } else {
-                // Jika tidak ada password baru, tetap gunakan password lama yang diambil dari database
-                $hashedPassword = $user['password'];
+            if (!in_array($fileExtension, $allowedExtensions)) {
+                return ['status' => 'error', 'message' => 'Tipe file foto profil tidak diizinkan'];
             }
 
-            // Update pengguna
-            $query = "UPDATE users SET username = :username, email = :email, password = :password, role = :role WHERE id_user = :id_user";
-            $stmt = $conn->prepare($query);
-            $stmt->bindParam(':id_user', $id_user);
-        } else {
-            // Insert pengguna baru
-            $hashedPassword = password_hash($password, PASSWORD_BCRYPT); // Hash password baru
-            $query = "INSERT INTO users (username, email, password, role) VALUES (:username, :email, :password, :role)";
-            $stmt = $conn->prepare($query);
+            $uniqueFileName = uniqid() . '.' . $fileExtension;
+            $targetFile = $targetDir . $uniqueFileName;
+
+            if (!move_uploaded_file($_FILES['foto_profil']['tmp_name'], $targetFile)) {
+                return ['status' => 'error', 'message' => 'Gagal mengunggah foto profil'];
+            }
+            $foto_profil = $uniqueFileName;
         }
 
-        // Bind parameter
+        if ($id_user) {
+            // Update existing user
+            $query = "UPDATE users SET username=:username, email=:email, password=:password, role=:role " .
+                ($foto_profil ? ", foto_profil=:foto_profil" : "") .
+                " WHERE id_user=:id_user";
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam(':id_user', $id_user);
+
+            if ($foto_profil) {
+                $stmt->bindParam(':foto_profil', $foto_profil);
+            }
+        } else {
+            // Insert new user
+            $query = "INSERT INTO users (username, email, password, role, foto_profil) VALUES (:username, :email, :password, :role, :foto_profil)";
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam(':foto_profil', $foto_profil);
+        }
+
+        // Bind parameters
         $stmt->bindParam(':username', $username);
         $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':password', $hashedPassword); // Menggunakan password yang di-hash
+        $stmt->bindParam(':password', $password);
         $stmt->bindParam(':role', $role);
 
-        // Eksekusi query
         if ($stmt->execute()) {
             $message = $id_user ? 'User berhasil diperbarui' : 'User berhasil ditambahkan';
             return ['status' => 'success', 'message' => $message];
         } else {
-            return ['status' => 'error', 'message' => 'Gagal menyimpan data user'];
+            return ['status' => 'error', 'message' => 'Gagal menyimpan user'];
         }
     } catch (PDOException $e) {
         return ['status' => 'error', 'message' => 'Kesalahan database: ' . $e->getMessage()];
     }
 }
-
-
 
 // Fungsi untuk menghapus user
 function deleteUser($conn)
@@ -140,6 +144,8 @@ try {
         echo json_encode(addOrUpdateUser($conn));
     } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
         echo json_encode(deleteUser($conn));
+    } elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+        echo json_encode(addOrUpdateUser($conn));
     }
 } catch (Exception $e) {
     echo json_encode(['status' => 'error', 'message' => 'Terjadi kesalahan: ' . $e->getMessage()]);

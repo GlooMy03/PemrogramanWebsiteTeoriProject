@@ -60,7 +60,7 @@ function addOrUpdateMenuItem($conn)
     // Proses upload gambar
     $gambar = $_FILES['gambar']['name'] ?? '';
     if ($gambar) {
-      $targetDir = "uploads/";
+      $targetDir = "uploadsMenu/";
       $fileExtension = strtolower(pathinfo($gambar, PATHINFO_EXTENSION));
       $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
 
