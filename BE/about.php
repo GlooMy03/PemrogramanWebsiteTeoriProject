@@ -50,15 +50,42 @@ function addOrUpdateAboutItem($conn)
       return ['status' => 'error', 'message' => implode(', ', $validationErrors)];
     }
 
+    // Proses upload gambar
+    $gambar = $_FILES['gambar']['name'] ?? '';
+    if ($gambar) {
+      $targetDir = "uploadsAbout/";
+      $fileExtension = strtolower(pathinfo($gambar, PATHINFO_EXTENSION));
+      $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+
+      if (!in_array($fileExtension, $allowedExtensions)) {
+        return ['status' => 'error', 'message' => 'Tipe file gambar tidak diizinkan'];
+      }
+
+      $uniqueFileName = uniqid() . '.' . $fileExtension;
+      $targetFile = $targetDir . $uniqueFileName;
+
+      if (!move_uploaded_file($_FILES['gambar']['tmp_name'], $targetFile)) {
+        return ['status' => 'error', 'message' => 'Gagal mengunggah gambar'];
+      }
+      $gambar = $uniqueFileName;
+    }
+
     if ($id_about) {
-      // Update existing about
-      $query = "UPDATE about SET judul=:judul, konten=:konten WHERE id_about=:id_about";
+      // Update existing about item
+      $query = "UPDATE about SET judul=:judul, konten=:konten " .
+        ($gambar ? ", gambar=:gambar" : "") .
+        " WHERE id_about=:id_about";
       $stmt = $conn->prepare($query);
       $stmt->bindParam(':id_about', $id_about);
+
+      if ($gambar) {
+        $stmt->bindParam(':gambar', $gambar);
+      }
     } else {
-      // Insert new about
-      $query = "INSERT INTO about (judul, konten) VALUES (:judul, :konten)";
+      // Insert new about item
+      $query = "INSERT INTO about (judul, konten, gambar) VALUES (:judul, :konten, :gambar)";
       $stmt = $conn->prepare($query);
+      $stmt->bindParam(':gambar', $gambar);
     }
 
     // Bind parameters
@@ -76,7 +103,7 @@ function addOrUpdateAboutItem($conn)
   }
 }
 
-// Fungsi untuk menghapus about
+// Fungsi untuk menghapus about item
 function deleteAboutItem($conn)
 {
   try {

@@ -71,10 +71,16 @@ let aboutToDeleteId = null;
 // Fungsi untuk menampilkan modal konfirmasi
 function showDeleteConfirmationModal(id_about) {
     aboutToDeleteId = id_about;
-    const confirmModal = document.createElement('div');
-    confirmModal.id = 'delete-confirmation-modal';
-    confirmModal.style.cssText = `
-        display: block;
+    const confirmModal = document.getElementById('delete-confirmation-modal');
+    confirmModal.style.display = 'block';
+}
+
+// Fungsi untuk membuat modal konfirmasi delete
+function createDeleteConfirmationModal() {
+    const modal = document.createElement('div');
+    modal.id = 'delete-confirmation-modal';
+    modal.style.cssText = `
+        display: none;
         position: fixed;
         z-index: 1000;
         left: 0;
@@ -85,7 +91,7 @@ function showDeleteConfirmationModal(id_about) {
         background-color: rgba(0,0,0,0.4);
     `;
 
-    confirmModal.innerHTML = `
+    modal.innerHTML = `
         <div style="
             background-color: #fefefe;
             margin: 15% auto;
@@ -112,7 +118,7 @@ function showDeleteConfirmationModal(id_about) {
                    onmouseout="this.style.backgroundColor='#f0f0f0'">
                     Batal
                 </button>
-                <button onclick="confirmDeleteAbout()" style="
+                <button onclick="confirmDeleteAboutItem()" style="
                     background-color: #f44336;
                     color: white;
                     border: none;
@@ -128,19 +134,17 @@ function showDeleteConfirmationModal(id_about) {
         </div>
     `;
 
-    document.body.appendChild(confirmModal);
+    document.body.appendChild(modal);
 }
 
 // Fungsi untuk menutup modal konfirmasi
 function closeDeleteConfirmationModal() {
     const confirmModal = document.getElementById('delete-confirmation-modal');
-    if (confirmModal) {
-        confirmModal.remove();
-    }
+    confirmModal.style.display = 'none';
     aboutToDeleteId = null;
 }
 
-// Fungsi untuk mengambil about dari database dan menampilkannya
+// Fungsi untuk mengambil about items dari database
 function fetchAboutItems() {
     fetch(apiUrl)
     .then(response => {
@@ -159,17 +163,20 @@ function fetchAboutItems() {
                 row.innerHTML = `
                     <td>${item.id_about}</td>
                     <td>${item.judul}</td>
-                    <td>${item.konten}</td>
+                    <td>${item.konten.length > 100 ? item.konten.substring(0, 100) + '...' : item.konten}</td>
                     <td>
-                        <button onclick="editAbout(${item.id_about})">Edit</button>
-                        <button onclick="deleteAbout(${item.id_about})">Hapus</button>
+                        ${item.gambar ? `<img src="../BE/uploadsAbout/${item.gambar}" width="50" alt="${item.judul}">` : 'Tidak ada gambar'}
+                    </td>
+                    <td>
+                        <button onclick="editAboutItem(${item.id_about})">Edit</button>
+                        <button onclick="deleteAboutItem(${item.id_about})">Hapus</button>
                     </td>
                 `;
                 aboutTableBody.appendChild(row);
             });
         } else {
             const row = document.createElement('tr');
-            row.innerHTML = `<td colspan="4" class="text-center">Tidak ada item About</td>`;
+            row.innerHTML = `<td colspan="5" class="text-center">Tidak ada item About</td>`;
             aboutTableBody.appendChild(row);
         }
     })
@@ -179,8 +186,8 @@ function fetchAboutItems() {
     });
 }
 
-// Fungsi untuk mengedit about
-function editAbout(id_about) {
+// Fungsi untuk mengedit about item
+function editAboutItem(id_about) {
     fetch(`${apiUrl}?id_about=${id_about}`, {
         method: 'GET',
     })
@@ -192,11 +199,11 @@ function editAbout(id_about) {
     })
     .then(data => {
         if (data) {
-            const about = data.find(item => item.id_about == id_about);
-            if (about) {
-                document.getElementById('about-id').value = about.id_about;
-                document.getElementById('judul').value = about.judul;
-                document.getElementById('konten').value = about.konten;
+            const aboutItem = data.find(item => item.id_about == id_about);
+            if (aboutItem) {
+                document.getElementById('about-id').value = aboutItem.id_about;
+                document.getElementById('judul').value = aboutItem.judul;
+                document.getElementById('konten').value = aboutItem.konten;
                 document.getElementById('modal-title').innerText = 'Edit Item About';
                 document.getElementById('about-modal').style.display = 'block';
             }
@@ -208,13 +215,13 @@ function editAbout(id_about) {
     });
 }
 
-// Fungsi untuk menghapus about
-function deleteAbout(id_about) {
+// Fungsi untuk menghapus about item
+function deleteAboutItem(id_about) {
     showDeleteConfirmationModal(id_about);
 }
 
-// Fungsi untuk mengkonfirmasi penghapusan about
-function confirmDeleteAbout() {
+// Fungsi untuk konfirmasi delete about item
+function confirmDeleteAboutItem() {
     if (aboutToDeleteId) {
         fetch(apiUrl, {
             method: 'DELETE',
@@ -308,12 +315,13 @@ document.getElementById('about-form').addEventListener('submit', function(event)
 // Event listener untuk menutup modal jika diklik di luar area modal
 document.addEventListener('click', function(event) {
     const deleteModal = document.getElementById('delete-confirmation-modal');
-    if (deleteModal && event.target === deleteModal) {
+    if (event.target === deleteModal) {
         closeDeleteConfirmationModal();
     }
 });
 
 // Inisialisasi saat halaman dimuat
 window.addEventListener('DOMContentLoaded', () => {
+    createDeleteConfirmationModal();
     fetchAboutItems();
 });
