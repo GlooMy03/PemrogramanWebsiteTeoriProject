@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mie Gacoan - Admin Dashboard</title>
+    <title>Mie Gacoan - Admin About Management</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/admin_style.css">
+    <link rel="stylesheet" href="../css/admin_about_style.css">
 </head>
 <body>
     <!-- Navigation -->
@@ -24,26 +24,56 @@
             </div>
             <div class="right-menu">
                 <button class="profile" onclick="location.href='admin_profile.html';">Profile</button>
-                <button class="logout"onclick="location.href='login.html';">Logout</button>
+                <button class="logout" onclick="location.href='login.html';">Logout</button>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <main class="admin-dashboard">
-        <section class="dashboard-header">
-            <h1>Admin Dashboard</h1>
-            <p>Welcome, Admin! Here's an overview of Mie Gacoan's performance.</p>
+    <main class="admin-about">
+        <section class="about-header">
+            <h1>About Management</h1>
+            <p>Manage the About content for Mie Gacoan.</p>
         </section>
 
+        <section class="about-items">
+            <div class="about-item-header">
+                <h2>About Items</h2>
+                <button class="add-about-item" onclick="openAddModal()">Add New About Item</button>
+            </div>
+            <table class="about-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Content</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="about-table-body">
+                    <!-- About items will be dynamically added here -->
+                </tbody>
+            </table>
+        </section>
 
-        
-
-
-
-
-
-            </main>
+        <div class="modal" id="about-modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeModal()">&times;</span>
+                <h2 id="modal-title">Add New About Item</h2>
+                <form id="about-form">
+                    <input type="hidden" id="about-id" name="id_about">
+                    <div class="form-group">
+                        <label for="judul">Title:</label>
+                        <input type="text" id="judul" name="judul" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="konten">Content:</label>
+                        <textarea id="konten" name="konten" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" id="save-button">Save</button>
+                </form>
+            </div>
+        </div>
+    </main>
 
     <!-- Footer -->
     <footer>
@@ -65,5 +95,6 @@
             </div>
         </div>
     </footer>
+    <script src="../js/admin_about.js"></script>
 </body>
 </html>
