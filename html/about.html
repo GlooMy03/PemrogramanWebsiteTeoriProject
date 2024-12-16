@@ -6,21 +6,90 @@
     <title>About - Mie Gacoan</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/about_style.css">
+    <style>
+        /* Zigzag Layout Styles */
+        #dynamic-about-sections {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .about-section-zigzag {
+            display: flex;
+            align-items: center;
+            margin-bottom: 60px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .about-section-zigzag:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .about-text-zigzag {
+            flex: 1;
+            padding: 30px;
+            background-color: #f9f9f9;
+        }
+
+        .about-image-zigzag {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-image-zigzag img {
+          width: 100%;
+          border-radius: 10px;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+
+        .about-text-zigzag h2 {
+          font-family: 'Playfair Display', serif;
+          font-size: 2.5rem;
+          margin-bottom: 2rem;
+          color: #333;
+        }
+
+        .about-text-zigzag p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .loading, .error-message {
+            text-align: center;
+            padding: 20px;
+            font-size: 18px;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .about-section-zigzag {
+                flex-direction: column !important;
+            }
+
+            .about-text-zigzag, .about-image-zigzag {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigation -->
+    <!-- Navigation (same as previous implementation) -->
     <nav class="nav">
         <div class="menu-wrap">
             <a href="index.html" class="logo">
                 <img src="assets/LogoMieGacoan-removebg-preview.png" alt="Mie Gacoan Logo">
             </a>
             <div class="menu">
-              <a href="index.html" class="menu-item">Home</a>
-              <a href="about.html" class="menu-item active">About</a>
-              <a href="menuUtama.html" class="menu-item">Menu</a>
-              <a href="order.html" class="menu-item">Order</a>
-              <a href="contact.html" class="menu-item">Contact</a>
-          </div>
+                <a href="index.html" class="menu-item">Home</a>
+                <a href="about.html" class="menu-item active">About</a>
+                <a href="menuUtama.html" class="menu-item">Menu</a>
+                <a href="order.html" class="menu-item">Order</a>
+                <a href="contact.html" class="menu-item">Contact</a>
+            </div>
             <div class="right-menu">
                 <button class="login">Login</button>
                 <button class="sign-in">Sign In</button>
@@ -28,91 +97,130 @@
         </div>
     </nav>
    
-    <!-- About Section -->
-    <section class="about-section">
-        <div class="about-content">
-            <div class="about-text">
-                <h2>Mie Gacoan</h2>
-                <p>We are a company that connects the world of real estate with maximum security and transparency in your operations. Purchase or rental of real estate. Our advantage is many years of experience and familiarity with our customers. We are present in Madrid with branches in Barcelona and Malaga.</p>
-                <p>We have a commitment to give life to the house market, so we use tools everything under one roof. By constantly analyzing our activities and services, we not only stay up-to-date, but develop further and set ourselves apart from the competition.</p>
-            </div>
-            <div class="about-image">
-                <img src="assets/mie tunggal.jpg" alt="About Mie Gacoan">
-            </div>
-        </div>
-    </section>
-    <section class="about-section">
-        <div class="about-content">
-            <div class="about-text">
-                <h2>About Us</h2>
-                <p>We are a company that connects the world of real estate with maximum security and transparency in your operations. Purchase or rental of real estate. Our advantage is many years of experience and familiarity with our customers. We are present in Madrid with branches in Barcelona and Malaga.</p>
-                <p>We have a commitment to give life to the house market, so we use tools everything under one roof. By constantly analyzing our activities and services, we not only stay up-to-date, but develop further and set ourselves apart from the competition.</p>
-            </div>
-            <div class="about-image">
-                <img src="assets/LogoMieGacoan.png" alt="About Mie Gacoan">
-            </div>
-        </div>
-    </section>
-            <!-- Other -->
-            <section class="other-section">
-                <h2>OUR TEAM</h2>
-                <div class="other-grid">
-                    <div class="other-card">
-                        <div class="team-image">
-                            <img src="assets/ppAlfi.jpg" alt="About Mie Gacoan">
-                        </div>
-                        <h3>Alfi Aulia Azzahra</h3>
-                        <p href="#">BackEnd Developer</>
-                    </div>
-                    <div class="other-card">
-                        <div class="team-image">
-                            <img src="assets/ppIsan.jpg" alt="About Mie Gacoan">
-                        </div>
-                        <h3>Ichsan Putra Mahyuni</h3>
-                        <a href="#">BackEnd Developer</a>
-                    </div>
-                    <div class="other-card">
-                        <div class="team-image">
-                            <img src="assets/ppNanda.jpg" alt="About Mie Gacoan">
-                        </div>
-                        <h3>Nanda Adela Larasati Kuncoro</h3>
-                        <a href="#">FrontEnd Developer</a>
-                    </div>
-                </div>
-            </section>
-
-  <!-- Footer -->
-  <footer>
-    <div class="footer-content">
-        <div class="footer-info">
-            <div class="footer-logo">
-                <img src="assets/LogoMieGacoan-removebg-preview.png" alt="Mie Gacoan">
-            </div>
-            <p>In the new era of technology we look a in the future with certainty and pride for our company suit.</p>
-            <div class="social-links">
-                <a href="#">Twitter</a>
-                <a href="#">Facebook</a>
-                <a href="#">Instagram</a>
-                <a href="#">Pinterest</a>
-            </div>
-        </div>
-        <div class="footer-links">
-            <h3>Pages</h3>
-            <a href="homepage.html">Home</a>
-            <a href="#">About</a>
-            <a href="menu.html">Menu</a>
-            <a href="#">Pricing</a>
-            <a href="#">Blog</a>
-        </div>
-        <div class="footer-links">
-            <h3>Utility Pages</h3>
-            <a href="#">Start Here</a>
-            <a href="#">Styleguide</a>
-            <a href="#">Password Protected</a>
-            <a href="#">404 Not Found</a>
-            <a href="#">Licenses</a>
-        </div>
+    <!-- Dynamic About Sections -->
+    <div id="dynamic-about-sections" class="loading">
+        Memuat informasi About...
     </div>
-</footer>
+
+    <!-- Team Section (same as previous implementation) -->
+    <section class="other-section">
+        <h2>OUR TEAM</h2>
+        <div class="other-grid">
+            <div class="other-card">
+                <div class="team-image">
+                    <img src="assets/ppAlfi.jpg" alt="Alfi Aulia Azzahra">
+                </div>
+                <h3>Alfi Aulia Azzahra</h3>
+                <p>BackEnd Developer</p>
+            </div>
+            <div class="other-card">
+                <div class="team-image">
+                    <img src="assets/ppIsan.jpg" alt="Ichsan Putra Mahyuni">
+                </div>
+                <h3>Ichsan Putra Mahyuni</h3>
+                <p>BackEnd Developer</p>
+            </div>
+            <div class="other-card">
+                <div class="team-image">
+                    <img src="assets/ppNanda.jpg" alt="Nanda Adela Larasati Kuncoro">
+                </div>
+                <h3>Nanda Adela Larasati Kuncoro</h3>
+                <p>FrontEnd Developer</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <div class="footer-logo">
+                    <img src="assets/LogoMieGacoan-removebg-preview.png" alt="Mie Gacoan">
+                </div>
+                <p>In the new era of technology we look a in the future with certainty and pride for our company suit.</p>
+                <div class="social-links">
+                    <a href="#">Twitter</a>
+                    <a href="#">Facebook</a>
+                    <a href="#">Instagram</a>
+                    <a href="#">Pinterest</a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h3>Pages</h3>
+                <a href="homepage.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="menu.html">Menu</a>
+                <a href="#">Pricing</a>
+                <a href="#">Blog</a>
+            </div>
+            <div class="footer-links">
+                <h3>Utility Pages</h3>
+                <a href="#">Start Here</a>
+                <a href="#">Styleguide</a>
+                <a href="#">Password Protected</a>
+                <a href="#">404 Not Found</a>
+                <a href="#">Licenses</a>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // API URL (adjust to your actual backend URL)
+        const apiUrl = 'http://localhost/PemrogramanWebsiteTeoriProject/BE/admin_about.php';
+
+        // Function to fetch and display about items
+        function fetchAboutItems() {
+            const dynamicSectionsContainer = document.getElementById('dynamic-about-sections');
+            
+            fetch(apiUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Clear loading message
+                dynamicSectionsContainer.innerHTML = '';
+
+                if (data && data.length > 0) {
+                    data.forEach((item, index) => {
+                        const sectionDiv = document.createElement('section');
+                        sectionDiv.className = 'about-section-zigzag';
+                        
+                        sectionDiv.innerHTML = `
+                            <div class="about-text-zigzag">
+                                <h2>${item.judul}</h2>
+                                <p>${item.konten}</p>
+                            </div>
+                            <div class="about-image-zigzag">
+                                ${item.gambar 
+                                    ? `<img src="../BE/uploadsAbout/${item.gambar}" alt="${item.judul}">`
+                                    : ''}
+                            </div>
+                        `;
+
+                        dynamicSectionsContainer.appendChild(sectionDiv);
+                    });
+                } else {
+                    dynamicSectionsContainer.innerHTML = `
+                        <div class="error-message">
+                            Tidak ada informasi About tersedia.
+                        </div>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching about items:', error);
+                dynamicSectionsContainer.innerHTML = `
+                    <div class="error-message">
+                        Gagal memuat informasi About. Silakan coba lagi nanti.
+                    </div>
+                `;
+            });
+        }
+
+        // Fetch about items when page loads
+        window.addEventListener('DOMContentLoaded', fetchAboutItems);
+    </script>
 </body>
 </html>
