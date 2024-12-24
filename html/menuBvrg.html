@@ -102,6 +102,45 @@
             font-size: 1.1em;
             color: #666;
         }
+        .counter-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .counter-button {
+            background: #e44d26;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+            font-size: 16px;
+            transition: background 0.3s ease;
+        }
+
+        .counter-button:hover {
+            background: #c73e1d;
+        }
+
+        .counter-value {
+            font-size: 16px;
+            font-weight: bold;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .add-to-cart-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -204,8 +243,10 @@
     <!-- JavaScript for menu functionality -->
     <script>
         const apiUrl = 'http://localhost/PemrogramanWebsiteTeoriProject/BE/admin_menu.php';
+        
+        // Object to store counters for each menu item
+        const itemCounters = {};
 
-        // Function to show notification
         function showNotification(message, type = 'success') {
             const notification = document.getElementById('cart-notification');
             notification.textContent = message;
@@ -217,7 +258,16 @@
             }, 3000);
         }
 
-        // Function to fetch and display menu items
+        function updateCounter(itemId, increment) {
+            itemCounters[itemId] = (itemCounters[itemId] || 0) + increment;
+            if (itemCounters[itemId] < 0) itemCounters[itemId] = 0;
+            
+            const counterElement = document.querySelector(`#counter-${itemId}`);
+            if (counterElement) {
+                counterElement.textContent = itemCounters[itemId];
+            }
+        }
+
         function fetchAndDisplayMenuItems() {
             const menuGrid = document.querySelector('.menu-grid');
             menuGrid.innerHTML = '<div class="loading">Loading menu items...</div>';
@@ -230,9 +280,8 @@
                     return response.json();
                 })
                 .then(data => {
-                    // Filter only beverages
                     const beverages = data.filter(item => item.kategori.toLowerCase() === 'minuman');
-                    menuGrid.innerHTML = ''; // Clear loading message
+                    menuGrid.innerHTML = '';
 
                     if (beverages.length === 0) {
                         menuGrid.innerHTML = '<div class="error-message">No beverages available at the moment.</div>';
@@ -242,6 +291,7 @@
                     beverages.forEach(item => {
                         const menuItem = document.createElement('div');
                         menuItem.className = 'menuMKN-item';
+                        const itemId = `item-${item.nama_menu.replace(/\s+/g, '-')}`.toLowerCase();
                         
                         const stockStatus = parseInt(item.stok) === 0 ? 
                             '<div class="out-of-stock-badge">Out of Stock</div>' : '';
@@ -254,13 +304,20 @@
                                 <div class="menu-item-header">
                                     <span class="menu-item-title">${item.nama_menu}</span>
                                     <span class="menu-item-price">Rp ${parseFloat(item.harga).toLocaleString('id-ID')}</span>
-                                    ${parseInt(item.stok) > 0 ? `
-                                        <div class="add-to-cart" onclick="addToCart('${item.nama_menu}')">
-                                            <i class="icon-plus">+</i>
-                                        </div>
-                                    ` : ''}
                                 </div>
                                 ${item.deskripsi ? `<p class="menu-item-description">${item.deskripsi}</p>` : ''}
+                                ${parseInt(item.stok) > 0 ? `
+                                    <div class="add-to-cart-container">
+                                        <div class="counter-container">
+                                            <button class="counter-button" onclick="updateCounter('${itemId}', -1)">-</button>
+                                            <span class="counter-value" id="counter-${itemId}">0</span>
+                                            <button class="counter-button" onclick="updateCounter('${itemId}', 1)">+</button>
+                                        </div>
+                                        <button class="add-to-cart" onclick="addToCart('${item.nama_menu}', '${itemId}')">
+                                            Add to Cart
+                                        </button>
+                                    </div>
+                                ` : ''}
                             </div>
                         `;
                         
@@ -273,10 +330,19 @@
                 });
         }
 
-        // Function to handle adding items to cart
-        function addToCart(itemName) {
-            // This is a placeholder function - you can implement actual cart functionality
-            showNotification(`${itemName} added to cart`);
+        function addToCart(itemName, itemId) {
+            const quantity = itemCounters[itemId] || 0;
+            if (quantity > 0) {
+                showNotification(`Added ${quantity} ${itemName} to cart`);
+                // Reset counter after adding to cart
+                itemCounters[itemId] = 0;
+                const counterElement = document.querySelector(`#counter-${itemId}`);
+                if (counterElement) {
+                    counterElement.textContent = '0';
+                }
+            } else {
+                showNotification('Please select quantity', 'error');
+            }
         }
 
         // Initialize when the page loads
