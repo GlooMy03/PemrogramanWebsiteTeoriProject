@@ -20,6 +20,13 @@
     font-family: 'Inter', sans-serif;
   }
   
+  .error-message {
+    text-align: center;
+    color: #ff0000;
+    padding: 20px;
+    font-size: 1.1em;
+}
+
   /* Navigation */
   .nav {
     padding: 1rem 6rem;
@@ -131,6 +138,12 @@
 }
 
 /* Menu Section */
+
+.menu-item-description {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 5px;
+}
 .menu-section {
     padding: 60px 6rem;
     max-width: 1400px;
@@ -170,27 +183,22 @@
 }
 
 .menuMKN-item {
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    transition: var(--transition);
-    background: white;
     position: relative;
-    min-height: 400px; /* Memberikan tinggi minimum pada card */
-    display: flex;
-    flex-direction: column;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
 }
 
 .menuMKN-item:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
 }
 
 .menuMKN-item img {
     width: 100%;
-    height: 220px;
+    height: 200px;
     object-fit: cover;
-    transition: var(--transition);
 }
 
 .menuMKN-item:hover img {
@@ -198,34 +206,25 @@
 }
 
 .menu-item-info {
-    padding: 1.5rem;
-    position: relative;
-    padding-bottom: 4rem;
+    padding: 15px;
 }
 
 .menu-item-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.8rem;
-    position: relative;
-    width: 100%;
+    margin-bottom: 10px;
 }
 
 .menu-item-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--dark-color);
-    margin-right: 1rem; /* Memberikan jarak dengan harga */
-    flex: 1;
+    font-weight: bold;
+    font-size: 1.1em;
 }
 
 .menu-item-price {
-    color: var(--primary-color);
-    font-weight: 700;
-    font-size: 1.1rem;
+    color: #e44d26;
+    font-weight: bold;
 }
-
 .menu-item-category {
     color: var(--primary-color);
     font-weight: 700;
@@ -235,26 +234,33 @@
 }
 
 .add-to-cart {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    background-color: var(--primary-color);
+    background: #e44d26;
+    color: white;
+    width: 25px;
+    height: 25px;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     cursor: pointer;
-    transition: var(--transition);
-    box-shadow: 0 4px 15px rgba(255, 0, 153, 0.3);
-    z-index: 2; /* Memastikan tombol selalu di atas */
+    transition: background 0.3s ease;
 }
 
 .add-to-cart:hover {
-    transform: scale(1.1);
-    background-color: var(--secondary-color);
+    background: #c73e1d;
 }
+
+.out-of-stock-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9em;
+}
+
 
 .icon-plus {
     font-size: 1.5rem;
@@ -470,7 +476,10 @@ footer {
     }
 
     .menu-grid {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+        padding: 20px;
     }
 
     .other-grid {

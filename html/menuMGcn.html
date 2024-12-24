@@ -6,6 +6,102 @@
     <title>Mie Gacoan Menu</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/menuDETAIL_style.css">
+    <style>
+        .error-message {
+            text-align: center;
+            color: #ff0000;
+            padding: 20px;
+            font-size: 1.1em;
+        }
+        
+        .menu-item-description {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .menuMKN-item {
+            position: relative;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .menuMKN-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .menuMKN-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .menu-item-info {
+            padding: 15px;
+        }
+
+        .menu-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .menu-item-title {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .menu-item-price {
+            color: #e44d26;
+            font-weight: bold;
+        }
+
+        .add-to-cart {
+            background: #e44d26;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            background: #c73e1d;
+        }
+
+        .out-of-stock-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 0, 0, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            font-size: 1.1em;
+            color: #666;
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation -->
@@ -35,131 +131,18 @@
   
     <!-- Menu Sections -->
 
+
+    <!-- Menu Section -->
     <section class="menu-section">
         <div class="section-header">
             <h2>MIE GACOAN</h2>
         </div>
         <div class="menu-grid">
-            <div class="menuMKN-item">
-                <img src="assets/gacoan.jpg" alt="Mie Gacoan">
-                <div class="menu-item-info">
-                    <div class="menu-item-header">
-                        <span class="menu-item-title">MIE GACOAN LV 0</span>
-                        <span class="menu-item-price">Rp 11,500</span>
-                    </div>
-                    <span class="menu-item-category">Mie dengan cita rasa manis gurih tidak pedas</span>
-                    <div class="add-to-cart">
-                        <i class="icon-plus">+</i>
-                    </div>
-                </div>
-            </div>
-            <div class="menuMKN-item">
-                <img src="assets/gacoan.jpg" alt="Mie Hompimpa">
-                <div class="menu-item-info">
-                    <div class="menu-item-header">
-                        <span class="menu-item-title">MIE GACOAN LV 1</span>
-                        <span class="menu-item-price">Rp 11,500</span>
-                    </div>
-                    <span class="menu-item-category">Mie dengan cita rasa manis gurih dengan tingkat kepedasan level 1</span>
-                    <div class="add-to-cart">
-                        <i class="icon-plus">+</i>
-                    </div>
-                </div>
-            </div>
-            <div class="menuMKN-item">
-                <img src="assets/gacoan.jpg" alt="Seblak">
-                <div class="menu-item-info">
-                    <div class="menu-item-header">
-                        <span class="menu-item-title">MIE GACOAN LV 2</span>
-                        <span class="menu-item-price">Rp 11,500</span>
-                    </div>
-                    <span class="menu-item-category">Mie dengan cita rasa manis gurih dengan tingkat kepedasan level 2</span>
-                    <div class="add-to-cart">
-                        <i class="icon-plus">+</i>
-                    </div>
-                </div>
-            </div>
-            <div class="menuMKN-item">
-                <img src="assets/gacoan.jpg" alt="Mie Gacoan">
-                <div class="menu-item-info">
-                    <div class="menu-item-header">
-                        <span class="menu-item-title">MIE GACOAN LV 3</span>
-                        <span class="menu-item-price">Rp 11,500</span>
-                    </div>
-                    <span class="menu-item-category">Mie dengan cita rasa manis gurih dengan tingkat kepedasan level 3</span>
-                    <div class="add-to-cart">
-                        <i class="icon-plus">+</i>
-                    </div>
-                </div>
-            </div>
-            <div class="menuMKN-item">
-                <img src="assets/gacoan.jpg" alt="Mie Hompimpa">
-                <div class="menu-item-info">
-                    <div class="menu-item-header">
-                        <span class="menu-item-title">MIE GACOAN LV 4</span>
-                        <span class="menu-item-price">Rp 11,500</span>
-                    </div>
-                    <span class="menu-item-category">Mie dengan cita rasa manis gurih dengan tingkat kepedasan level 4</span>
-                    <div class="add-to-cart">
-                        <i class="icon-plus">+</i>
-                    </div>
-                </div>
-            </div>
-            <div class="menuMKN-item">
-                <img src="assets/gacoan.jpg" alt="Seblak">
-                <div class="menu-item-info">
-                    <div class="menu-item-header">
-                        <span class="menu-item-title">MIE GACOAN LV 5</span>
-                        <span class="menu-item-price">Rp 11,500</span>
-                    </div>
-                    <span class="menu-item-category">Mie dengan cita rasa manis gurih dengan tingkat kepedasan level 5</span>
-                    <div class="add-to-cart">
-                        <i class="icon-plus">+</i>
-                    </div>
-                </div>
-            </div>
-            <div class="menuMKN-item">
-                <img src="assets/gacoan.jpg" alt="Udang Keju">
-                <div class="menu-item-info">
-                    <div class="menu-item-header">
-                        <span class="menu-item-title">MIE GACOAN LV 6</span>
-                        <span class="menu-item-price">Rp 12,500</span>
-                    </div>
-                    <span class="menu-item-category">Mie pedas manis dengan pedas level 6</span>
-                    <div class="add-to-cart">
-                        <i class="icon-plus">+</i>
-                    </div>
-                </div>
-            </div>
-            <div class="menuMKN-item">
-                <img src="assets/gacoan.jpg" alt="Udang Rambutan">
-                <div class="menu-item-info">
-                    <div class="menu-item-header">
-                        <span class="menu-item-title">MIE GACOAN LV 7</span>
-                        <span class="menu-item-price">Rp 12,500</span>
-                    </div>
-                    <span class="menu-item-category">Mie pedas manis dengan pedas level 7</span>
-                    <div class="add-to-cart">
-                        <i class="icon-plus">+</i>
-                    </div>
-                </div>
-            </div>
-            <div class="menuMKN-item">
-                <img src="assets/gacoan.jpg" alt="Siomay">
-                <div class="menu-item-info">
-                    <div class="menu-item-header">
-                        <span class="menu-item-title">MIE GACOAN LV 8</span>
-                        <span class="menu-item-price">Rp 12,500</span>
-                    </div>
-                    <span class="menu-item-category">Mie pedas manis dengan pedas level 8</span>
-                    <div class="add-to-cart">
-                        <i class="icon-plus">+</i>
-                    </div>
-                </div>
-            </div>
+            <!-- Items will be loaded dynamically -->
+            <div class="loading">Loading menu items...</div>
         </div>
     </section>
-
+  
 
             <!-- Other -->
             <section class="other-section">
@@ -218,5 +201,89 @@
           </div>
       </div>
   </footer>
+    <!-- Add cart notification element -->
+    <div id="cart-notification" style="display: none; position: fixed; top: 20px; right: 20px; background: #4CAF50; color: white; padding: 15px; border-radius: 5px; z-index: 1000;"></div>
+
+    <!-- JavaScript for menu functionality -->
+    <script>
+        const apiUrl = 'http://localhost/PemrogramanWebsiteTeoriProject/BE/admin_menu.php';
+
+        // Function to show notification
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('cart-notification');
+            notification.textContent = message;
+            notification.style.backgroundColor = type === 'success' ? '#4CAF50' : '#f44336';
+            notification.style.display = 'block';
+
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        // Function to fetch and display menu items
+        function fetchAndDisplayMenuItems() {
+            const menuGrid = document.querySelector('.menu-grid');
+            menuGrid.innerHTML = '<div class="loading">Loading menu items...</div>';
+
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Filter only beverages
+                    const beverages = data.filter(item => item.kategori.toLowerCase() === 'mie gacoan');
+                    menuGrid.innerHTML = ''; // Clear loading message
+
+                    if (beverages.length === 0) {
+                        menuGrid.innerHTML = '<div class="error-message">No beverages available at the moment.</div>';
+                        return;
+                    }
+
+                    beverages.forEach(item => {
+                        const menuItem = document.createElement('div');
+                        menuItem.className = 'menuMKN-item';
+                        
+                        const stockStatus = parseInt(item.stok) === 0 ? 
+                            '<div class="out-of-stock-badge">Out of Stock</div>' : '';
+                        
+                        menuItem.innerHTML = `
+                            ${stockStatus}
+                            <img src="../BE/uploadsMenu/${item.gambar}" alt="${item.nama_menu}" 
+                                onerror="this.src='assets/default-beverage.jpg'">
+                            <div class="menu-item-info">
+                                <div class="menu-item-header">
+                                    <span class="menu-item-title">${item.nama_menu}</span>
+                                    <span class="menu-item-price">Rp ${parseFloat(item.harga).toLocaleString('id-ID')}</span>
+                                    ${parseInt(item.stok) > 0 ? `
+                                        <div class="add-to-cart" onclick="addToCart('${item.nama_menu}')">
+                                            <i class="icon-plus">+</i>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                                ${item.deskripsi ? `<p class="menu-item-description">${item.deskripsi}</p>` : ''}
+                            </div>
+                        `;
+                        
+                        menuGrid.appendChild(menuItem);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching menu items:', error);
+                    menuGrid.innerHTML = '<div class="error-message">Sorry, there was an error loading the menu.</div>';
+                });
+        }
+
+        // Function to handle adding items to cart
+        function addToCart(itemName) {
+            // This is a placeholder function - you can implement actual cart functionality
+            showNotification(`${itemName} added to cart`);
+        }
+
+        // Initialize when the page loads
+        document.addEventListener('DOMContentLoaded', fetchAndDisplayMenuItems);
+    </script>
 </body>
 </html>
