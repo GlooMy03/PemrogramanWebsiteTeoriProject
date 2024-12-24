@@ -1,4 +1,4 @@
-const apiUrl = 'http://localhost/php_folder_praktikum/teoriweb/PemrogramanWebsiteTeoriProject/BE/admin_users.php';
+const apiUrl = 'http://localhost/PemrogramanWebsiteTeoriProject/BE/admin_users.php';
 
 // Fungsi untuk menampilkan toast/pemberitahuan
 function showToast(message, type = 'success') {
