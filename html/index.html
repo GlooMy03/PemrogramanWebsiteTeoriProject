@@ -22,19 +22,22 @@
                 <a href="contact.html" class="menu-item">Contact</a>
             </div>
             <div class="right-menu">
-                <button class="login" onclick="location.href='login.html';">Login</button>
-                <button class="sign-Up" onclick="location.href='signup.html';">Sign Up</button>
-                <button class="profile" onclick="location.href='profile.html';">Profile</button>
+                <!-- Tombol login dan signup yang hanya muncul jika user belum login -->
+                <button id="loginBtn" class="login" onclick="location.href='login.html';">Login</button>
+                <button id="signUpBtn" class="sign-Up" onclick="location.href='signup.html';">Sign Up</button>
+
+                <!-- Tombol profile yang hanya muncul jika user sudah login -->
+                <button id="profileBtn" class="profile" onclick="location.href='profile.html';" style="display:none;">Profile</button>
             </div>
         </div>
     </nav>
+    
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
             <h1>Mie Gacoan</h1>
             <p>Mie Gacoan adalah sebuah waralaba restoran asal Indonesia. Usaha ini didirikan pada awal tahun 2016 di Kota Malang, dan berada di bawah naungan PT Pesta Pora Abadi.</p>
             <button class="order-now" onclick="location.href='order.html';">Order now</button>
-            
         </div>
     </section>
 
@@ -59,46 +62,6 @@
                 <h3>Beverages</h3>
                 <p>In the new era of technology we look in the future with certainty and pride for our life.</p>
                 <a href="menuUtama.html" class="explore-menu">Explore Menu</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="testimonials">
-        <h2>What Our Customers Say</h2>
-        <div class="testimonial-cards">
-            <div class="testimonial-card">
-                <h4>"Restoran penuh kenangan"</h4>
-                <p>Saya bertemu teman-teman saya di restaurant tersebut. Menghabiskan waktu bersama. Mie yang disajikan pun terasa sangat nikmat untuk menjadi teman ngobrol di sore hari.</p>
-                <div class="testimonial-author">
-                    <img src="assets/ppAlfi.jpg" alt="Alfi Aulia">
-                    <div>
-                        <h5>Alfi Aulia Azzahra</h5>
-                        <small>Tirto Landung Sari</small>
-                    </div>
-                </div>
-            </div>
-            <div class="testimonial-card">
-                <h4>"Menunya sangat bervarias"</h4>
-                <p>Tempat ini menyenangkan. Makanan yang disajikan sungguh menggiurkan selera. Ada juga side dish dimsum. Perpedaan rasa pedas dan dimulainya diminum. Ditambah minuman yang bervariasi.</p>
-                <div class="testimonial-author">
-                    <img src="assets/ppIsan.jpg" alt="Ichsan">
-                    <div>
-                        <h5>Ichsan Putra Mahyuni</h5>
-                        <small>Dau, Sengkaling</small>
-                    </div>
-                </div>
-            </div>
-            <div class="testimonial-card">
-                <h4>"Cocok untuk anak muda"</h4>
-                <p>Tempat yang estetik menyajikan live musik juga tempat spot foto yang instagramable. Penyajian makanan dan minuman sangat bagus dan memukat. Cocok untuk berfoto dengan makanan.</p>
-                <div class="testimonial-author">
-                    <img src="assets/ppNanda.jpg" alt="Nanda">
-                    <div>
-                        <h5>Nanda Adela Larasati Kuncoro</h5>
-                        <small>Junrejo, Batu</small>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -136,5 +99,27 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // Cek apakah pengguna sudah login
+        function checkLoginStatus() {
+            const user = sessionStorage.getItem('user');  // Cek di sessionStorage
+
+            if (user) {
+                // Jika pengguna sudah login, sembunyikan tombol login dan sign up, tampilkan tombol profile
+                document.getElementById('loginBtn').style.display = 'none';
+                document.getElementById('signUpBtn').style.display = 'none';
+                document.getElementById('profileBtn').style.display = 'block';
+            } else {
+                // Jika pengguna belum login, tampilkan tombol login dan sign up
+                document.getElementById('loginBtn').style.display = 'block';
+                document.getElementById('signUpBtn').style.display = 'block';
+                document.getElementById('profileBtn').style.display = 'none';
+            }
+        }
+
+        // Panggil fungsi untuk memeriksa status login ketika halaman dimuat
+        checkLoginStatus();
+    </script>
 </body>
 </html>

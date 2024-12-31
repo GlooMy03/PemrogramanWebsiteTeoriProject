@@ -45,7 +45,6 @@
           box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
 
-
         .about-text-zigzag h2 {
           font-family: 'Playfair Display', serif;
           font-size: 2.5rem;
@@ -77,7 +76,7 @@
     </style>
 </head>
 <body>
-    <!-- Navigation (same as previous implementation) -->
+    <!-- Navigation -->
     <nav class="nav">
         <div class="menu-wrap">
             <a href="index.html" class="logo">
@@ -91,8 +90,9 @@
                 <a href="contact.html" class="menu-item">Contact</a>
             </div>
             <div class="right-menu">
-                <button class="login">Login</button>
-                <button class="sign-in">Sign In</button>
+                <button id="loginBtn" class="login">Login</button>
+                <button id="signUpBtn" class="sign-in">Sign Up</button>
+                <button id="profileBtn" style="display:none;">Profile</button> <!-- Hidden by default -->
             </div>
         </div>
     </nav>
@@ -102,7 +102,7 @@
         Memuat informasi About...
     </div>
 
-    <!-- Team Section (same as previous implementation) -->
+    <!-- Team Section -->
     <section class="other-section">
         <h2>OUR TEAM</h2>
         <div class="other-grid">
@@ -163,6 +163,7 @@
             </div>
         </div>
     </footer>
+
     <script>
         // API URL (adjust to your actual backend URL)
         const apiUrl = 'http://localhost/PemrogramanWebsiteTeoriProject/BE/admin_about.php';
@@ -219,7 +220,27 @@
             });
         }
 
-        // Fetch about items when page loads
+        // Function to check if the user is logged in
+        function checkLoginStatus() {
+            const user = sessionStorage.getItem('user');  // Check in sessionStorage
+
+            if (user) {
+                // If the user is logged in, hide login and sign-up buttons, show profile button
+                document.getElementById('loginBtn').style.display = 'none';
+                document.getElementById('signUpBtn').style.display = 'none';
+                document.getElementById('profileBtn').style.display = 'block';
+            } else {
+                // If the user is not logged in, show login and sign-up buttons
+                document.getElementById('loginBtn').style.display = 'block';
+                document.getElementById('signUpBtn').style.display = 'block';
+                document.getElementById('profileBtn').style.display = 'none';
+            }
+        }
+
+        // Call the function to check login status when the page loads
+        checkLoginStatus();
+
+        // Fetch about items when the page loads
         window.addEventListener('DOMContentLoaded', fetchAboutItems);
     </script>
 </body>

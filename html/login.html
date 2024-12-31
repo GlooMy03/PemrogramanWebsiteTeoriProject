@@ -35,24 +35,35 @@
             body: formData
         })
         .then(response => response.json())
-.then(data => {
-    if (data.success) {
-        alert(data.message);
-        // Simpan data user di localStorage atau sessionStorage
-        localStorage.setItem('user', JSON.stringify(data.user));
-
-        // Cek data.user.role untuk pengalihan yang tepat
-        const user = JSON.parse(localStorage.getItem('user'));
-        if (user.role === 'Admin') {
-            window.location.href = 'admin_dashboard.html'; // Arahkan ke admin_dashboard.html
-        } else {
-            window.location.href = 'index.html'; // Arahkan ke index.html
-        }
-    } else {
-        alert(data.error || 'Login gagal.');
-    }
-})
-
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                // Simpan data user di sessionStorage
+                sessionStorage.setItem('user', JSON.stringify(data.user));
+                // Cek apakah pengguna sudah login dengan memeriksa sessionStorage
+                if (sessionStorage.getItem('user') === null) {
+                    // Jika pengguna belum login, arahkan ke halaman login
+                    window.location.href = 'login.html';
+                } else {
+                    // Jika sudah login, ambil data pengguna dari sessionStorage
+                    const user = JSON.parse(sessionStorage.getItem('user'));
+                    console.log('Selamat datang, ' + user.username);
+                }
+                // Cek data.user.role untuk pengalihan yang tepat
+                const user = JSON.parse(sessionStorage.getItem('user'));
+                if (user.role === 'admin') {
+                    window.location.href = 'admin_dashboard.html'; // Arahkan ke admin_dashboard.html
+                } else {
+                    window.location.href = 'index.html'; // Arahkan ke index.html
+                }
+            } else {
+                alert(data.error || 'Login gagal.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan. Silakan coba lagi.');
+        });
     });
     </script>
 </body>

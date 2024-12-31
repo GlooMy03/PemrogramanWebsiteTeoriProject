@@ -1,9 +1,3 @@
-// Item prices (in Rupiah)
-const prices = {
-  'mie-gacoan': 15000,
-  'siomay': 12000,
-  'es-milo': 8000
-};
 
 // Format number to Rupiah
 function formatRupiah(number) {
@@ -23,17 +17,25 @@ function updateItemDisplay(itemElement, quantity) {
   
   itemElement.querySelector('.quantity').textContent = quantity;
   itemElement.querySelector('.item-total').textContent = formatRupiah(total);
+  // Update cart in Local Storage
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const itemIndex = cart.findIndex(item => item.id === itemId);
+  if (itemIndex !== -1) {
+    cart[itemIndex].quantity = quantity;
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }
 }
 
 // Calculate and update cart totals
 function updateCartTotals() {
-  let subtotal = 0;
+    let subtotal = 0;
+  
+  // Get cart items from Local Storage
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
   
   // Calculate subtotal
-  document.querySelectorAll('.food-item').forEach(item => {
-      const itemId = item.dataset.id;
-      const quantity = parseInt(item.querySelector('.quantity').textContent);
-      subtotal += calculateItemTotal(quantity, prices[itemId]);
+  cart.forEach(item => {
+    subtotal += calculateItemTotal(item.quantity, item.price);
   });
   
   // Calculate tax and total
@@ -48,33 +50,112 @@ function updateCartTotals() {
 
 // Initialize cart functionality
 function initializeCart() {
-  document.querySelectorAll('.food-item').forEach(item => {
-      const minusBtn = item.querySelector('.minus');
-      const plusBtn = item.querySelector('.plus');
-      const quantityDisplay = item.querySelector('.quantity');
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartItemsContainer = document.getElementById('cartItems');
+    
+    // If the cart is empty
+    if (cart.length === 0) {
+      cartItemsContainer.innerHTML = "<p>Keranjang kosong!</p>";
+      return;
+    }
+  
+    // Render items in the cart
+    cart.forEach(item => {
+      const listItem = document.createElement('li');
+      listItem.classList.add('food-item');
+      listItem.dataset.id = item.id;
+      listItem.innerHTML = `
+        <img src="assets/${item.image}" alt="${item.title}" width="80" height="80">
+        <div class="food-item-details">
+          <span class="food-name">${item.title}</span>
+          <span class="food-price">${item.price}</span>
+          <span class="food-category">${item.category}</span>
+        </div>
+        <div class="quantity-control">
+          <button class="qty-btn minus">-</button>
+          <span class="quantity">${item.quantity}</span>
+          <button class="qty-btn plus">+</button>
+        </div>
+        <span class="item-total">${formatRupiah(item.price * item.quantity)}</span>
+        <button class="remove-item" data-id="${item.id}">Hapus</button>
+      `;
       
-      minusBtn.addEventListener('click', () => {
-          let quantity = parseInt(quantityDisplay.textContent);
-          if (quantity > 1) {
-              quantity--;
-              updateItemDisplay(item, quantity);
-              updateCartTotals();
-          }
+      cartItemsContainer.appendChild(listItem);
+  
+      // Event listeners for quantity buttons
+      listItem.querySelector('.minus').addEventListener('click', () => {
+        if (item.quantity > 1) {
+          item.quantity--;
+          updateItemDisplay(listItem, item.quantity);
+          updateCartTotals();
+        }
       });
-      
-      plusBtn.addEventListener('click', () => {
-          let quantity = parseInt(quantityDisplay.textContent);
-          if (quantity < 10) { // Maximum 10 items per food item
-              quantity++;
-              updateItemDisplay(item, quantity);
-              updateCartTotals();
-          }
+  
+      listItem.querySelector('.plus').addEventListener('click', () => {
+        item.quantity++;
+        updateItemDisplay(listItem, item.quantity);
+        updateCartTotals();
       });
-  });
+  
+      // Remove item from cart
+      listItem.querySelector('.remove-item').addEventListener('click', () => {
+        const index = cart.findIndex(cartItem => cartItem.id === item.id);
+        if (index !== -1) {
+          cart.splice(index, 1);
+          localStorage.setItem('cart', JSON.stringify(cart));
+          location.reload(); // Refresh page to reflect changes
+        }
+      });
+    });
   
   // Initial calculation
   updateCartTotals();
 }
+
+function submitOrder() {
+    // Mengambil data dari localStorage atau sumber lainnya
+    const checkoutType = localStorage.getItem("checkoutType");  // Mengambil pilihan checkout
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];  // Mengambil data keranjang belanja
+    const userId = localStorage.getItem("userId");  // Mengambil ID pengguna jika sudah login
+
+    // Memastikan data yang diperlukan tersedia
+    if (!checkoutType || !cart.length || !userId) {
+        alert("Data pemesanan tidak lengkap.");
+        return;
+    }
+
+    // Menyiapkan data pemesanan
+    const orderData = {
+        checkoutType: checkoutType,
+        items: cart,  // Menyertakan data item dari keranjang belanja
+        userId: userId  // Menyertakan ID pengguna yang login
+    };
+
+    // Mengirim data ke server menggunakan fetch
+    fetch('process_order.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(orderData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Pemesanan berhasil!');
+            // Misalnya mengarahkan pengguna ke halaman konfirmasi
+            window.location.href = 'order_confirmation.html?orderId=' + data.orderId;
+        } else {
+            alert('Pemesanan gagal.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan, coba lagi nanti.');
+    });
+}
+
+
 
 // Initialize when document is ready
 document.addEventListener('DOMContentLoaded', initializeCart);

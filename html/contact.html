@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - Mie Gacoan</title>
+    <title>Contact - Mie Gacoan</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/contact_style.css">
 </head>
@@ -22,12 +22,12 @@
                 <a href="contact.html" class="menu-item active">Contact</a>
             </div>
             <div class="right-menu">
-                <button class="login">Login</button>
-                <button class="sign-in">Sign In</button>
+                <button id="loginBtn" class="login">Login</button>
+                <button id="signUpBtn" class="sign-in">Sign In</button>
+                <button id="profileBtn" style="display: none;" class="profile">Profile</button>
             </div>
         </div>
     </nav>
-
 
     <!-- About Section -->
     <section class="about-section">
@@ -38,6 +38,7 @@
             </div>
         </div>
     </section>
+
     <div class="container">
         <form action="#">
             <div class="form-group">
@@ -93,5 +94,27 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // Cek apakah pengguna sudah login
+        function checkLoginStatus() {
+            const user = sessionStorage.getItem('user');  // Cek di sessionStorage
+
+            if (user) {
+                // Jika pengguna sudah login, sembunyikan tombol login dan sign up, tampilkan tombol profile
+                document.getElementById('loginBtn').style.display = 'none';
+                document.getElementById('signUpBtn').style.display = 'none';
+                document.getElementById('profileBtn').style.display = 'block';
+            } else {
+                // Jika pengguna belum login, tampilkan tombol login dan sign up
+                document.getElementById('loginBtn').style.display = 'block';
+                document.getElementById('signUpBtn').style.display = 'block';
+                document.getElementById('profileBtn').style.display = 'none';
+            }
+        }
+
+        // Panggil fungsi untuk memeriksa status login ketika halaman dimuat
+        window.addEventListener('DOMContentLoaded', checkLoginStatus);
+    </script>
 </body>
 </html>

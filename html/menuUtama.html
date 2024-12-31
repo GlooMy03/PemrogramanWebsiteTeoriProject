@@ -22,8 +22,9 @@
               <a href="contact.html" class="menu-item">Contact</a>
           </div>
             <div class="right-menu">
-                <button class="login">Login</button>
-                <button class="sign-in">Sign In</button>
+                <button id="loginBtn" class="login">Login</button>
+                <button id="signUpBtn" class="sign-in">Sign In</button>
+                <button id="profileBtn" class="profile" style="display:none;">Profile</button>
             </div>
         </div>
     </nav>
@@ -210,5 +211,27 @@
       </div>
   </div>
 </footer>
+<script>
+    // Cek apakah pengguna sudah login
+    function checkLoginStatus() {
+        const user = sessionStorage.getItem('user');  // Cek di sessionStorage
+
+        if (user) {
+            // Jika pengguna sudah login, sembunyikan tombol login dan sign up, tampilkan tombol profile
+            document.getElementById('loginBtn').style.display = 'none';
+            document.getElementById('signUpBtn').style.display = 'none';
+            document.getElementById('profileBtn').style.display = 'block';
+        } else {
+            // Jika pengguna belum login, tampilkan tombol login dan sign up
+            document.getElementById('loginBtn').style.display = 'block';
+            document.getElementById('signUpBtn').style.display = 'block';
+            document.getElementById('profileBtn').style.display = 'none';
+        }
+    }
+
+    // Panggil fungsi untuk memeriksa status login ketika halaman dimuat
+    document.addEventListener('DOMContentLoaded', checkLoginStatus);
+</script>
+
 </body>
 </html>
