@@ -305,21 +305,35 @@
                     showNotification('Please login to add items to cart', 'error');
                     return;
                 }
-    
-                // Simpan item ke keranjang (localStorage)
-                let cart = JSON.parse(localStorage.getItem('cart')) || [];
-                const itemIndex = cart.findIndex(item => item.id === itemId);
-    
-                if (itemIndex > -1) {
-                    cart[itemIndex].quantity += quantity;
-                } else {
-                    cart.push({ id: itemId, name: itemName, quantity: quantity, price: parseFloat(itemCounters[itemId].price) });
-                }
-    
-                localStorage.setItem('cart', JSON.stringify(cart));
-    
-                showNotification(`Added ${quantity} ${itemName} to cart`);
-    
+
+                // Ambil ID customer dari session atau sumber lain
+                const idCustomer = getUserId();  // Gantilah dengan cara Anda mendapatkan ID customer
+
+                // Kirim data ke server untuk disimpan di database
+                fetch('http://localhost/PemrogramanWebsiteTeoriProject/BE/add_to_cart.php', {  // Gantilah dengan URL endpoint yang sesuai
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',  // Sesuai dengan format PHP POST
+                    },
+                    body: new URLSearchParams({
+                        id_customer: idCustomer,
+                        id_menu: itemId,
+                        quantity: quantity
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        showNotification('Item added to cart in database');
+                    } else {
+                        showNotification(data.message || 'Failed to add item to database', 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showNotification('An error occurred while adding to cart', 'error');
+                });
+
                 // Reset counter setelah menambah ke keranjang
                 itemCounters[itemId] = 0;
                 const counterElement = document.querySelector(`#counter-${itemId}`);

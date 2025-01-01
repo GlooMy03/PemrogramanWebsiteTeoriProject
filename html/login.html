@@ -24,47 +24,51 @@
         </div>
     </div>
 
-    <script>
-    document.getElementById('loginForm').addEventListener('submit', function (e) {
-        e.preventDefault(); // Cegah form submit default
+   <script>
+        // Tangkap event submit pada form login
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Cegah submit default form
 
-        const formData = new FormData(this);
+            // Ambil data form menggunakan FormData
+            const formData = new FormData(this);
 
-        fetch('http://localhost/PemrogramanWebsiteTeoriProject/BE/login.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert(data.message);
-                // Simpan data user di sessionStorage
-                sessionStorage.setItem('user', JSON.stringify(data.user));
-                // Cek apakah pengguna sudah login dengan memeriksa sessionStorage
-                if (sessionStorage.getItem('user') === null) {
-                    // Jika pengguna belum login, arahkan ke halaman login
-                    window.location.href = 'login.html';
+            // Kirimkan data ke server menggunakan fetch
+            fetch('http://localhost/PemrogramanWebsiteTeoriProject/BE/login.php', {
+                method: 'POST',
+                body: formData // Kirim data form
+            })
+            .then(response => response.json()) // Parse response sebagai JSON
+            .then(data => {
+                if (data.success) {
+                    // Tampilkan pesan sukses
+                    alert(data.message || 'Login berhasil!');
+                    
+                    // Simpan informasi user ke sessionStorage
+                    sessionStorage.setItem('userId', data.user.id_user); // ID user
+                    sessionStorage.setItem('username', data.user.username); // Username user
+                    sessionStorage.setItem('role', data.user.role); // Role user (Admin/User)
+                    
+                    // Periksa role untuk menentukan halaman yang dituju
+                    const userRole = data.user.role;
+                    if (userRole === 'admin') {
+                        window.location.href = 'admin_dashboard.html'; // Halaman admin
+                    } else {
+                        window.location.href = 'index.html'; // Halaman utama user
+                    }
                 } else {
-                    // Jika sudah login, ambil data pengguna dari sessionStorage
-                    const user = JSON.parse(sessionStorage.getItem('user'));
-                    console.log('Selamat datang, ' + user.username);
+                    // Jika gagal, tampilkan error
+                    alert(data.error || 'Login gagal. Periksa username dan password Anda.');
                 }
-                // Cek data.user.role untuk pengalihan yang tepat
-                const user = JSON.parse(sessionStorage.getItem('user'));
-                if (user.role === 'admin') {
-                    window.location.href = 'admin_dashboard.html'; // Arahkan ke admin_dashboard.html
-                } else {
-                    window.location.href = 'index.html'; // Arahkan ke index.html
-                }
-            } else {
-                alert(data.error || 'Login gagal.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Terjadi kesalahan. Silakan coba lagi.');
+            })
+            .catch(error => {
+                // Tangani kesalahan jaringan atau server
+                console.error('Error:', error);
+                alert('Terjadi kesalahan. Silakan coba lagi nanti.');
+            });
         });
-    });
+
     </script>
+    
+        
 </body>
 </html>

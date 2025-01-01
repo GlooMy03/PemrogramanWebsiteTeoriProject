@@ -1,6 +1,7 @@
 
 
 <?php
+session_start();
 $servername = "localhost";
 $username = "root";  // Ganti dengan username database Anda
 $password = "";  // Ganti dengan password database Anda

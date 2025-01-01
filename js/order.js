@@ -1,74 +1,73 @@
-
 // Format number to Rupiah
 function formatRupiah(number) {
-  return 'Rp ' + number.toLocaleString('id-ID');
-}
-
-// Calculate total for a single item
-function calculateItemTotal(quantity, pricePerItem) {
-  return quantity * pricePerItem;
-}
-
-// Update display for a single item
-function updateItemDisplay(itemElement, quantity) {
-  const itemId = itemElement.dataset.id;
-  const price = prices[itemId];
-  const total = calculateItemTotal(quantity, price);
-  
-  itemElement.querySelector('.quantity').textContent = quantity;
-  itemElement.querySelector('.item-total').textContent = formatRupiah(total);
-  // Update cart in Local Storage
-  const cart = JSON.parse(localStorage.getItem('cart')) || [];
-  const itemIndex = cart.findIndex(item => item.id === itemId);
-  if (itemIndex !== -1) {
-    cart[itemIndex].quantity = quantity;
-    localStorage.setItem('cart', JSON.stringify(cart));
+    return 'Rp ' + number.toLocaleString('id-ID');
   }
-}
-
-// Calculate and update cart totals
-function updateCartTotals() {
+  
+  // Calculate total for a single item
+  function calculateItemTotal(quantity, pricePerItem) {
+    return quantity * pricePerItem;
+  }
+  
+  // Update display for a single item
+  function updateItemDisplay(itemElement, quantity) {
+    const itemId = itemElement.dataset.id;
+    const price = parseInt(itemElement.dataset.price, 10);
+    const total = calculateItemTotal(quantity, price);
+  
+    itemElement.querySelector('.quantity').textContent = quantity;
+    itemElement.querySelector('.item-total').textContent = formatRupiah(total);
+  
+    // Update cart in Local Storage
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const itemIndex = cart.findIndex(item => item.id === itemId);
+    if (itemIndex !== -1) {
+      cart[itemIndex].quantity = quantity;
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+  }
+  
+  // Calculate and update cart totals
+  function updateCartTotals() {
     let subtotal = 0;
   
-  // Get cart items from Local Storage
-  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    // Get cart items from Local Storage
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
   
-  // Calculate subtotal
-  cart.forEach(item => {
-    subtotal += calculateItemTotal(item.quantity, item.price);
-  });
+    // Calculate subtotal
+    cart.forEach(item => {
+      subtotal += calculateItemTotal(item.quantity, item.price);
+    });
   
-  // Calculate tax and total
-  const tax = subtotal * 0.1; // 10% tax
-  const total = subtotal + tax;
+    // Calculate tax and total
+    const tax = subtotal * 0.1; // 10% tax
+    const total = subtotal + tax;
   
-  // Update display
-  document.getElementById('subtotal').textContent = formatRupiah(subtotal);
-  document.getElementById('tax').textContent = formatRupiah(tax);
-  document.getElementById('total').textContent = formatRupiah(total);
-}
-
-// Initialize cart functionality
-function initializeCart() {
+    // Update display
+    document.getElementById('subtotal').textContent = formatRupiah(subtotal);
+    document.getElementById('tax').textContent = formatRupiah(tax);
+    document.getElementById('total').textContent = formatRupiah(total);
+  }
+  
+  // Initialize cart functionality
+  function initializeCart() {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     const cartItemsContainer = document.getElementById('cartItems');
-    
-    // If the cart is empty
+  
     if (cart.length === 0) {
       cartItemsContainer.innerHTML = "<p>Keranjang kosong!</p>";
       return;
     }
   
-    // Render items in the cart
     cart.forEach(item => {
       const listItem = document.createElement('li');
       listItem.classList.add('food-item');
       listItem.dataset.id = item.id;
+      listItem.dataset.price = item.price;
       listItem.innerHTML = `
         <img src="assets/${item.image}" alt="${item.title}" width="80" height="80">
         <div class="food-item-details">
           <span class="food-name">${item.title}</span>
-          <span class="food-price">${item.price}</span>
+          <span class="food-price">${formatRupiah(item.price)}</span>
           <span class="food-category">${item.category}</span>
         </div>
         <div class="quantity-control">
@@ -79,7 +78,7 @@ function initializeCart() {
         <span class="item-total">${formatRupiah(item.price * item.quantity)}</span>
         <button class="remove-item" data-id="${item.id}">Hapus</button>
       `;
-      
+  
       cartItemsContainer.appendChild(listItem);
   
       // Event listeners for quantity buttons
@@ -108,53 +107,79 @@ function initializeCart() {
       });
     });
   
-  // Initial calculation
-  updateCartTotals();
-}
-
-function submitOrder() {
-    // Mengambil data dari localStorage atau sumber lainnya
-    const checkoutType = localStorage.getItem("checkoutType");  // Mengambil pilihan checkout
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];  // Mengambil data keranjang belanja
-    const userId = localStorage.getItem("userId");  // Mengambil ID pengguna jika sudah login
-
-    // Memastikan data yang diperlukan tersedia
-    if (!checkoutType || !cart.length || !userId) {
-        alert("Data pemesanan tidak lengkap.");
-        return;
+    // Initial calculation
+    updateCartTotals();
+  }
+  
+  // Submit order
+  function submitOrder() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const userId = localStorage.getItem('userId');
+  
+    if (!cart.length || !userId) {
+      alert("Data pemesanan tidak lengkap.");
+      return;
     }
-
-    // Menyiapkan data pemesanan
+  
     const orderData = {
-        checkoutType: checkoutType,
-        items: cart,  // Menyertakan data item dari keranjang belanja
-        userId: userId  // Menyertakan ID pengguna yang login
+      items: cart,
+      userId: userId
     };
-
-    // Mengirim data ke server menggunakan fetch
-    fetch('process_order.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(orderData)
+  
+    fetch('add_to_cart.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(orderData)
     })
-    .then(response => response.json())
-    .then(data => {
+      .then(response => response.json())
+      .then(data => {
         if (data.success) {
-            alert('Pemesanan berhasil!');
-            // Misalnya mengarahkan pengguna ke halaman konfirmasi
-            window.location.href = 'order_confirmation.html?orderId=' + data.orderId;
+          alert('Item berhasil ditambahkan ke cart!');
+          window.location.href = 'order.html';
         } else {
-            alert('Pemesanan gagal.');
+          alert('Gagal menambahkan item ke cart.');
         }
-    })
-    .catch(error => {
+      })
+      .catch(error => {
         console.error('Error:', error);
         alert('Terjadi kesalahan, coba lagi nanti.');
+      });
+  }
+  function showNotification(type, message) {
+    Swal.fire({
+        icon: type, // success, error, warning, info
+        title: message,
+        showConfirmButton: false,
+        timer: 2000,
     });
 }
 
+function addToCart(idCustomer, idMenu, quantity) {
+    fetch('add_to_cart.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `id_customer=${idCustomer}&id_menu=${idMenu}&quantity=${quantity}`,
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.status === 'success') {
+                showNotification('success', data.message); // Notifikasi sukses
+            } else {
+                showNotification('error', 'Error: ' + data.message); // Notifikasi error
+            }
+        })
+        .catch((error) => {
+            showNotification('error', 'Error: ' + error.message);
+        });
+}
+
+  // Initialize cart on page load
+  document.addEventListener('DOMContentLoaded', initializeCart);
+  
 
 
 // Initialize when document is ready
