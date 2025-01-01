@@ -24,7 +24,7 @@
             <div class="right-menu">
                 <button id="loginBtn" class="login">Login</button>
                 <button id="signUpBtn" class="sign-in">Sign In</button>
-                <button id="profileBtn" style="display: none;" class="profile">Profile</button>
+                <button id="profileBtn" class="profile" onclick="location.href='profile.html';" style="display:none;">Profile</button>
             </div>
         </div>
     </nav>
@@ -114,7 +114,7 @@
         }
 
         // Panggil fungsi untuk memeriksa status login ketika halaman dimuat
-        window.addEventListener('DOMContentLoaded', checkLoginStatus);
-    </script>
+        checkLoginStatus();
+        </script>
 </body>
 </html>

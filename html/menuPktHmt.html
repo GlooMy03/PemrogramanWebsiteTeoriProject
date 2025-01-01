@@ -155,10 +155,12 @@
               <a href="order.html" class="menu-item">Order</a>
               <a href="contact.html" class="menu-item">Contact</a>
           </div>
-            <div class="right-menu">
-                <button class="login">Login</button>
-                <button class="sign-in">Sign In</button>
-            </div>
+          <div class="right-menu">
+            <button class="login" id="loginBtn">Login</button>
+            <button class="sign-in" id="signUpBtn">Sign In</button>
+            <button class="profile" id="profileBtn" onclick="location.href='profile.html';"style="display: none;">Profile</button>
+        </div>
+        
         </div>
     </nav>
 
@@ -239,6 +241,25 @@
 
     <!-- JavaScript for menu functionality -->
     <script>
+        function checkLoginStatus() {
+            const user = sessionStorage.getItem('user');
+            const loginBtn = document.getElementById('loginBtn');
+            const signUpBtn = document.getElementById('signUpBtn');
+            const profileBtn = document.getElementById('profileBtn');
+            
+            if (user) {
+                // User is logged in
+                if (loginBtn) loginBtn.style.display = 'none';
+                if (signUpBtn) signUpBtn.style.display = 'none';
+                if (profileBtn) profileBtn.style.display = 'block';
+            } else {
+                // User is not logged in
+                if (loginBtn) loginBtn.style.display = 'block';
+                if (signUpBtn) signUpBtn.style.display = 'block';
+                if (profileBtn) profileBtn.style.display = 'none';
+            }
+        }
+        
         const apiUrl = 'http://localhost/PemrogramanWebsiteTeoriProject/BE/admin_menu.php';
         
         // Object to store counters for each menu item
@@ -343,7 +364,10 @@
         }
 
         // Initialize when the page loads
-        document.addEventListener('DOMContentLoaded', fetchAndDisplayMenuItems);
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+            fetchAndDisplayMenuItems();
+        });
     </script>
 </body>
 </html>
