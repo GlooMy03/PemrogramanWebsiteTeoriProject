@@ -51,13 +51,29 @@ function addOrUpdateUser($conn)
         $role = $_POST['role'] ?? 'Customer';
         $foto_profil = $_FILES['foto_profil']['name'] ?? '';
 
-        // Validasi input
-        $validationErrors = validateInput($_POST);
-        if (!empty($validationErrors)) {
-            return ['status' => 'error', 'message' => implode(', ', $validationErrors)];
+        // Validasi input minimal username
+        if (empty($username)) {
+            return ['status' => 'error', 'message' => 'Username tidak boleh kosong'];
         }
 
-        // upload foto profil
+        // Jika ini adalah update
+        if ($id_user) {
+            // Ambil data user yang ada
+            $stmt = $conn->prepare("SELECT * FROM users WHERE id_user = ?");
+            $stmt->execute([$id_user]);
+            $existingUser = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!$existingUser) {
+                return ['status' => 'error', 'message' => 'User tidak ditemukan'];
+            }
+
+            // Gunakan data yang ada jika tidak ada input baru
+            $email = $email ?: $existingUser['email'];
+            $password = $password ?: $existingUser['password'];
+            $role = $role ?: $existingUser['role'];
+        }
+
+        // Upload foto profil jika ada
         if ($foto_profil) {
             $targetDir = "PP/";
             $fileExtension = strtolower(pathinfo($foto_profil, PATHINFO_EXTENSION));
@@ -78,34 +94,37 @@ function addOrUpdateUser($conn)
 
         if ($id_user) {
             // Update existing user
-            $query = "UPDATE users SET username=:username, email=:email, password=:password, role=:role " .
-                ($foto_profil ? ", foto_profil=:foto_profil" : "") .
-                " WHERE id_user=:id_user";
-            $stmt = $conn->prepare($query);
-            $stmt->bindParam(':id_user', $id_user);
+            $updateFields = ['username = :username'];
+            $params = [':username' => $username, ':id_user' => $id_user];
 
+            // Hanya tambahkan foto_profil ke query jika ada upload baru
             if ($foto_profil) {
-                $stmt->bindParam(':foto_profil', $foto_profil);
+                $updateFields[] = 'foto_profil = :foto_profil';
+                $params[':foto_profil'] = $foto_profil;
+            }
+
+            $query = "UPDATE users SET " . implode(', ', $updateFields) . " WHERE id_user = :id_user";
+            $stmt = $conn->prepare($query);
+
+            if ($stmt->execute($params)) {
+                return ['status' => 'success', 'message' => 'User berhasil diperbarui'];
             }
         } else {
-            // Insert new user
+            // Insert new user logic (unchanged)
             $query = "INSERT INTO users (username, email, password, role, foto_profil) VALUES (:username, :email, :password, :role, :foto_profil)";
             $stmt = $conn->prepare($query);
+            $stmt->bindParam(':username', $username);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':password', $password);
+            $stmt->bindParam(':role', $role);
             $stmt->bindParam(':foto_profil', $foto_profil);
+
+            if ($stmt->execute()) {
+                return ['status' => 'success', 'message' => 'User berhasil ditambahkan'];
+            }
         }
 
-        // Bind parameters
-        $stmt->bindParam(':username', $username);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':password', $password);
-        $stmt->bindParam(':role', $role);
-
-        if ($stmt->execute()) {
-            $message = $id_user ? 'User berhasil diperbarui' : 'User berhasil ditambahkan';
-            return ['status' => 'success', 'message' => $message];
-        } else {
-            return ['status' => 'error', 'message' => 'Gagal menyimpan user'];
-        }
+        return ['status' => 'error', 'message' => 'Gagal menyimpan user'];
     } catch (PDOException $e) {
         return ['status' => 'error', 'message' => 'Kesalahan database: ' . $e->getMessage()];
     }

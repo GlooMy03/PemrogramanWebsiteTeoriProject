@@ -95,26 +95,35 @@ async function updateProfile() {
           return;
       }
 
+      // Fetch existing user data first
+      const response = await fetch(`http://localhost/PemrogramanWebsiteTeoriProject/BE/admin_users.php?id_user=${user.id_user}`);
+      const userData = await response.json();
+      const currentUser = userData.find(item => item.id_user == user.id_user);
+
+      if (!currentUser) {
+          throw new Error('User data not found');
+      }
+
       const formData = new FormData();
       formData.append('id_user', user.id_user);
       formData.append('username', newUsername);
-      formData.append('email', user.email); // Maintain existing email
-      formData.append('password', user.password); // Maintain existing password
+      formData.append('email', currentUser.email); // Use existing email
+      formData.append('password', currentUser.password); // Use existing password
       
       if (fileInput.files[0]) {
           formData.append('foto_profil', fileInput.files[0]);
       }
 
-      const response = await fetch('http://localhost/PemrogramanWebsiteTeoriProject/BE/admin_users.php', {
+      const updateResponse = await fetch('http://localhost/PemrogramanWebsiteTeoriProject/BE/admin_users.php', {
           method: 'POST',
           body: formData
       });
 
-      const data = await response.json();
+      const data = await updateResponse.json();
       
       if (data.status === 'success') {
           showToast('Profil berhasil diperbarui');
-          // Update session storage with new data
+          // Update session storage with new username only
           const updatedUser = {
               ...user,
               username: newUsername
