@@ -6,6 +6,113 @@
     <title>Profil Pengguna - Mie Gacoan</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/profil-style.css">
+    <style>
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 5px;
+            color: white;
+            z-index: 1000;
+            animation: slideIn 0.5s, fadeOut 0.5s 2.5s;
+        }
+        
+        .toast.success {
+            background-color: #4CAF50;
+        }
+        
+        .toast.error {
+            background-color: #f44336;
+        }
+        
+        @keyframes slideIn {
+            from {transform: translateX(100%);}
+            to {transform: translateX(0);}
+        }
+        
+        @keyframes fadeOut {
+            from {opacity: 1;}
+            to {opacity: 0;}
+        }
+
+        .profile-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .profile-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .profile-section input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .profile-section button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .profile-section button:hover {
+            background-color: #45a049;
+        }
+
+        .profile-image-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        #image-picker {
+            width: auto;
+            margin: 10px 0;
+        }
+
+        .update-button {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 12px 0;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .update-button:hover {
+            background-color: #45a049;
+        }
+
+        .email-display {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation -->
@@ -15,7 +122,7 @@
                 <img src="assets/LogoMieGacoan-removebg-preview.png" alt="Mie Gacoan Logo">
             </a>
             <div class="menu">
-                <a href="index.html" class="menu-item active">Home</a>
+                <a href="index.html" class="menu-item">Home</a>
                 <a href="about.html" class="menu-item">About</a>
                 <a href="menu.html" class="menu-item">Menu</a>
                 <a href="order.html" class="menu-item">Order</a>
@@ -29,92 +136,24 @@
 
     <div class="profile-container">
         <div class="profile-header">
-            <img id="profile-image" src="assets/default-avatar.png" alt="Profile Image">
+            <div class="profile-image-container">
+                <img id="profile-image" src="assets/default-avatar.png" alt="Profile Image">
+                <input type="file" id="image-picker" accept="image/jpeg,image/png,image/gif" onchange="previewImage(event)">
+            </div>
             <div>
-                <h2>Nama Pengguna</h2>
-                <p>Email: <span id="user-email">user@example.com</span></p>
+                <h2 id="username-display">Loading...</h2>
+                <p class="email-display">Email: <span id="user-email">Loading...</span></p>
             </div>
         </div>
 
         <div class="profile-section">
-            <h3>Ganti Foto Profil</h3>
-            <input type="file" id="image-picker" accept="image/*" onchange="changeImage(event)">
-        </div>
-
-        <div class="profile-section">
-            <h3>Ganti Username</h3>
+            <h3>Username</h3>
             <input type="text" id="new-username" placeholder="Masukkan Username Baru">
-            <button onclick="updateUsername()">Ganti Username</button>
         </div>
 
-        <div class="profile-section">
-            <h3>Ganti Email</h3>
-            <input type="email" id="new-email" placeholder="Masukkan Email Baru">
-            <button onclick="updateEmail()">Ganti Email</button>
-        </div>
-
-        <div class="order-history">
-            <h3>Riwayat Pemesanan</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>No. Pesanan</th>
-                        <th>Tanggal Pemesanan</th>
-                        <th>Menu</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>#12345</td>
-                        <td>2024-11-22</td>
-                        <td>Mie Gacoan Original</td>
-                        <td>Diproses</td>
-                    </tr>
-                    <tr>
-                        <td>#12346</td>
-                        <td>2024-11-20</td>
-                        <td>Mie Gacoan Pedas</td>
-                        <td>Siap Dikirim</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <button class="update-button" onclick="updateProfile()">Update Profile</button>
     </div>
 
-    <script>
-        function logout() {
-            // Clear user session or localStorage
-            alert("Anda telah keluar.");
-            window.location.href = 'login.html';
-        }
-
-        function changeImage(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('profile-image').src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function updateUsername() {
-            const newUsername = document.getElementById('new-username').value;
-            if (newUsername) {
-                alert("Username berhasil diganti menjadi " + newUsername);
-                // Call your API to update username here
-            }
-        }
-
-        function updateEmail() {
-            const newEmail = document.getElementById('new-email').value;
-            if (newEmail) {
-                alert("Email berhasil diganti menjadi " + newEmail);
-                // Call your API to update email here
-            }
-        }
-    </script>
+    <script src="../js/profile.js"></script>
 </body>
 </html>
