@@ -24,14 +24,14 @@
         </div>
     </div>
 
-   <script>
+    <script>
         // Tangkap event submit pada form login
         document.getElementById('loginForm').addEventListener('submit', function (e) {
             e.preventDefault(); // Cegah submit default form
-
+    
             // Ambil data form menggunakan FormData
             const formData = new FormData(this);
-
+    
             // Kirimkan data ke server menggunakan fetch
             fetch('http://localhost/PemrogramanWebsiteTeoriProject/BE/login.php', {
                 method: 'POST',
@@ -44,31 +44,34 @@
                     alert(data.message || 'Login berhasil!');
                     
                     // Simpan informasi user ke sessionStorage
+                    sessionStorage.setItem('isLoggedIn', true); // Status login
                     sessionStorage.setItem('userId', data.user.id_user); // ID user
                     sessionStorage.setItem('username', data.user.username); // Username user
                     sessionStorage.setItem('role', data.user.role); // Role user (Admin/User)
+                    sessionStorage.setItem('email', data.user.email); // Email user
                     
-                    // Periksa role untuk menentukan halaman yang dituju
-                    const userRole = data.user.role;
-                    if (userRole === 'admin') {
-                        window.location.href = 'admin_dashboard.html'; // Halaman admin
-                    } else {
-                        window.location.href = 'index.html'; // Halaman utama user
-                    }
+                    // Simpan data user lengkap ke localStorage
+                    localStorage.setItem('user', JSON.stringify({
+                        id_user: data.user.id_user,
+                        username: data.user.username,
+                        email: data.user.email,
+                        role: data.user.role
+                    }));
+
+                    // Arahkan ke halaman yang sesuai berdasarkan response
+                    window.location.href = data.redirect;
                 } else {
                     // Jika gagal, tampilkan error
                     alert(data.error || 'Login gagal. Periksa username dan password Anda.');
                 }
             })
+
             .catch(error => {
                 // Tangani kesalahan jaringan atau server
                 console.error('Error:', error);
                 alert('Terjadi kesalahan. Silakan coba lagi nanti.');
             });
         });
-
-    </script>
-    
-        
+    </script> 
 </body>
 </html>

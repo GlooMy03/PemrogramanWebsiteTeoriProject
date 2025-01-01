@@ -1,10 +1,42 @@
 <?php
 require_once 'db.php'; // Pastikan jalurnya benar
 
-// Proses hanya jika method adalah POST
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    session_start();  // Mulai session untuk menyimpan data cart dalam session
+// Kirim header CORS terlebih dahulu
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
+header('Content-Type: application/json');
 
+file_put_contents('debug.log', "POST Data: " . json_encode($_POST) . "\n", FILE_APPEND);
+file_put_contents('debug.log', "Raw Input: " . file_get_contents('php://input') . "\n", FILE_APPEND);
+
+
+// Tangani preflight request (OPTIONS method)
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
+
+// Pastikan session hanya dimulai sekali
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Log untuk debugging
+file_put_contents('debug.log', "Request Method: " . $_SERVER['REQUEST_METHOD'] . "\n", FILE_APPEND);
+
+// Tangani input JSON jika $_POST kosong
+if (empty($_POST)) {
+    $input = json_decode(file_get_contents('php://input'), true);
+    if (is_array($input)) {
+        $_POST = $input;
+    }
+}
+
+// Proses hanya jika metode adalah POST
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    file_put_contents('debug.log', "POST Data: " . json_encode($_POST) . "\n", FILE_APPEND);
+    
     // Validasi input
     if (
         !isset($_POST['id_customer'], $_POST['id_menu'], $_POST['quantity']) || 
@@ -16,7 +48,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'status' => 'error',
             'message' => 'Semua input wajib diisi!'
         ];
-        header('Content-Type: application/json');
         echo json_encode($response);
         exit;
     }
@@ -31,7 +62,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'status' => 'error',
             'message' => 'Jumlah harus lebih dari 0!'
         ];
-        header('Content-Type: application/json');
         echo json_encode($response);
         exit;
     }
@@ -47,6 +77,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $menu = $stmt->fetch(PDO::FETCH_ASSOC);
             $price = $menu['harga'];
 
+            // Hitung total harga
+            $total_price = $price * $quantity;
+
             // Insert ke tabel cart
             $insert_cart = "INSERT INTO cart (id_customer, id_menu, quantity, price) 
                             VALUES (:id_customer, :id_menu, :quantity, :price)";
@@ -56,12 +89,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
             $stmt->bindParam(':price', $total_price, PDO::PARAM_STR);
 
-            $total_price = $price * $quantity; // Total harga
-
             if ($stmt->execute()) {
                 // Menyimpan item ke session 'cart'
                 if (!isset($_SESSION['cart'])) {
-                    $_SESSION['cart'] = [];  // Jika session cart belum ada, buat array kosong
+                    $_SESSION['cart'] = []; // Jika session cart belum ada, buat array kosong
                 }
 
                 // Menambahkan item ke dalam cart di session
@@ -74,7 +105,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 $response = [
                     'status' => 'success',
-                    'message' => 'Menu berhasil ditambahkan ke cart!'
+                    'message' => 'Menu berhasil ditambahkan ke cart!',
+                    'cart' => $_SESSION['cart']
                 ];
             } else {
                 $response = [
@@ -91,17 +123,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } catch (PDOException $e) {
         $response = [
             'status' => 'error',
-            'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            'message' => 'Terjadi kesalahan pada server: ' . $e->getMessage()
         ];
     }
 
-    // Kirim header CORS terlebih dahulu
-    header('Access-Control-Allow-Origin: *');
-    header('Access-Control-Allow-Methods: POST');
-    header('Access-Control-Allow-Headers: Content-Type');
-    header('Content-Type: application/json');
-
     // Kirim response JSON
+    echo json_encode($response);
+} else {
+    $response = [
+        'status' => 'error',
+        'message' => 'Metode HTTP tidak didukung!'
+    ];
     echo json_encode($response);
 }
 ?>

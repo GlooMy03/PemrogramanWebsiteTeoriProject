@@ -247,10 +247,15 @@
 
     <!-- JavaScript for menu functionality -->
     <script>
+        // Fungsi untuk mengambil userId dari sessionStorage
+        function getUserId() {
+            return sessionStorage.getItem('userId'); // Pastikan 'userId' disimpan saat pengguna login
+        }
+    
         // Cek apakah pengguna sudah login
         function checkLoginStatus() {
-            const user = sessionStorage.getItem('user');  // Cek di sessionStorage
-    
+            const user = sessionStorage.getItem('user'); // Cek di sessionStorage
+        
             if (user) {
                 // Jika pengguna sudah login, sembunyikan tombol login dan sign up, tampilkan tombol profile
                 document.getElementById('loginBtn').style.display = 'none';
@@ -265,9 +270,6 @@
                 sessionStorage.setItem('isLoggedIn', false); // Set status logout
             }
         }
-    
-        // Panggil fungsi untuk memeriksa status login ketika halaman dimuat
-        checkLoginStatus();
     
         const apiUrl = 'http://localhost/PemrogramanWebsiteTeoriProject/BE/admin_menu.php';
     
@@ -299,150 +301,194 @@
         }
     
         function addToCart(itemName, itemId) {
-            const quantity = itemCounters[itemId] || 0;
-            if (quantity > 0) {
-                if (!isLoggedIn) {
-                    showNotification('Please login to add items to cart', 'error');
-                    return;
-                }
+    const quantity = itemCounters[itemId] || 0;
+    if (quantity > 0) {
+        if (!isLoggedIn) {
+            showNotification('Please login to add items to cart', 'error');
+            return;
+        }
 
-                // Ambil ID customer dari session atau sumber lain
-                const idCustomer = getUserId();  // Gantilah dengan cara Anda mendapatkan ID customer
+        // Ambil ID customer dari session
+        const idCustomer = getUserId();
 
-                // Kirim data ke server untuk disimpan di database
-                fetch('http://localhost/PemrogramanWebsiteTeoriProject/BE/add_to_cart.php', {  // Gantilah dengan URL endpoint yang sesuai
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',  // Sesuai dengan format PHP POST
-                    },
-                    body: new URLSearchParams({
-                        id_customer: idCustomer,
-                        id_menu: itemId,
-                        quantity: quantity
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        showNotification('Item added to cart in database');
-                    } else {
-                        showNotification(data.message || 'Failed to add item to database', 'error');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    showNotification('An error occurred while adding to cart', 'error');
-                });
+        if (!idCustomer) {
+            showNotification('User ID not found. Please log in again.', 'error');
+            return;
+        }
 
-                // Reset counter setelah menambah ke keranjang
-                itemCounters[itemId] = 0;
-                const counterElement = document.querySelector(`#counter-${itemId}`);
-                if (counterElement) {
-                    counterElement.textContent = '0';
-                }
+        // Ambil data item
+        const itemData = getItemData(itemId); // Asumsikan ada fungsi untuk mendapatkan data item
+
+        // Validasi harga dan gambar
+        const price = itemData.price;
+        const imageUrl = itemData.imageUrl || 'http://localhost/PemrogramanWebsiteTeoriProject/BE/uploadsMenu';
+        if (!price || !itemData.name) {
+            showNotification('Item data is incomplete. Cannot add to cart.', 'error');
+            return;
+        }
+
+        // Kirim data ke server untuk disimpan di database
+        fetch('http://localhost/PemrogramanWebsiteTeoriProject/BE/add_to_cart.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                id_customer: idCustomer,
+                id_menu: itemId,
+                quantity: quantity,
+                price: price
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                showNotification('Item added to cart in database');
             } else {
-                showNotification('Please select quantity', 'error');
+                showNotification(data.message || 'Failed to add item to database', 'error');
             }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('An error occurred while adding to the cart', 'error');
+        });
+
+        // Reset counter setelah menambah ke keranjang
+        itemCounters[itemId] = 0;
+        const counterElement = document.querySelector(`#counter-${itemId}`);
+        if (counterElement) {
+            counterElement.textContent = '0';
         }
+    } else {
+        showNotification('Please select quantity', 'error');
+    }
+}
+
     
-        function fetchAndDisplayMenuItems() {
-            const menuGrid = document.querySelector('.menu-grid');
-            menuGrid.innerHTML = '<div class="loading">Loading menu items...</div>';
-    
-            fetch(apiUrl)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    const items = data.filter(item => item.kategori.toLowerCase() === 'mie gacoan');
-                    menuGrid.innerHTML = '';
-    
-                    if (items.length === 0) {
-                        menuGrid.innerHTML = '<div class="error-message">No items available at the moment.</div>';
-                        return;
-                    }
-    
-                    items.forEach(item => {
-                        const menuItem = document.createElement('div');
-                        menuItem.className = 'menuMKN-item';
-                        const itemId = `item-${item.nama_menu.replace(/\s+/g, '-')}`.toLowerCase();
-    
-                        const stockStatus = parseInt(item.stok) === 0 ?
-                            '<div class="out-of-stock-badge">Out of Stock</div>' : '';
-    
-                        menuItem.innerHTML = `
-                            ${stockStatus}
-                            <img src="../BE/uploadsMenu/${item.gambar}" alt="${item.nama_menu}" 
-                                onerror="this.src='assets/default-beverage.jpg'">
-                            <div class="menu-item-info">
-                                <div class="menu-item-header">
-                                    <span class="menu-item-title">${item.nama_menu}</span>
-                                    <span class="menu-item-price">Rp ${parseFloat(item.harga).toLocaleString('id-ID')}</span>
-                                </div>
-                                ${item.deskripsi ? `<p class="menu-item-description">${item.deskripsi}</p>` : ''}
-                                ${parseInt(item.stok) > 0 ? `
-                                    <div class="add-to-cart-container">
-                                        <div class="counter-container">
-                                            <button class="counter-button" onclick="updateCounter('${itemId}', -1)">-</button>
-                                            <span class="counter-value" id="counter-${itemId}">0</span>
-                                            <button class="counter-button" onclick="updateCounter('${itemId}', 1)">+</button>
-                                        </div>
-                                        <button class="add-to-cart" onclick="addToCart('${item.nama_menu}', '${itemId}')">
-                                            Add to Cart
-                                        </button>
+function fetchAndDisplayMenuItems() {
+    const menuGrid = document.querySelector('.menu-grid');
+    menuGrid.innerHTML = '<div class="loading">Loading menu items...</div>';
+
+    fetch(apiUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const items = data.filter(item => 
+                item.kategori && item.kategori.toLowerCase() === 'mie gacoan'
+            );
+
+            menuGrid.innerHTML = ''; // Clear loading message
+
+            if (items.length === 0) {
+                menuGrid.innerHTML = '<div class="error-message">No items available at the moment.</div>';
+                return;
+            }
+
+            items.forEach(item => {
+                const menuItem = document.createElement('div');
+                menuItem.className = 'menuMKN-item';
+
+                const itemId = `item-${item.nama_menu.replace(/\s+/g, '-').toLowerCase()}`;
+                const stockStatus = parseInt(item.stok) === 0
+                    ? '<div class="out-of-stock-badge">Out of Stock</div>'
+                    : '';
+
+                menuItem.innerHTML = `
+                    ${stockStatus}
+                    <img src="../BE/uploadsMenu/${item.gambar}" alt="${item.nama_menu}" 
+                        onerror="this.src='assets/default-beverage.jpg'">
+                    <div class="menu-item-info">
+                        <div class="menu-item-header">
+                            <span class="menu-item-title">${item.nama_menu}</span>
+                            <span class="menu-item-price">Rp ${parseFloat(item.harga).toLocaleString('id-ID')}</span>
+                        </div>
+                        ${item.deskripsi ? `<p class="menu-item-description">${item.deskripsi}</p>` : ''}
+                        ${parseInt(item.stok) > 0 ? `
+                            <div class="add-to-cart-container">
+                                <form class="add-to-cart-form" onsubmit="submitCartForm(event, '${itemId}', '${item.nama_menu}', '${item.harga}')">
+                                    <input type="hidden" name="id_customer" value="1">
+                                    <input type="hidden" name="id_menu" value="${itemId}">
+                                    
+                                    
+                                    <!-- Quantity Input -->
+                                    <div class="counter-container">
+                                        <label for="jumlah-${itemId}">Jumlah:</label>
+                                        <input type="number" name="quantity" id="quantity-${itemId}" value="1" min="1" class="quantity-input">
+                                        
                                     </div>
-                                ` : ''}
+
+                                    <!-- Add to Cart Button -->
+                                    <button type="submit" class="add-to-cart">Add to Cart</button>
+                                </form>
                             </div>
-                        `;
-                        
-                        menuGrid.appendChild(menuItem);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error fetching menu items:', error);
-                    menuGrid.innerHTML = '<div class="error-message">Sorry, there was an error loading the menu.</div>';
-                });
-        }
-    
-        // Fungsi untuk menghitung total harga keranjang
-        function calculateCartTotal() {
-            let total = 0;
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            cart.forEach(item => {
-                total += item.price * item.quantity;
+                        ` : ''}
+                    </div>
+                `;
+
+                menuGrid.appendChild(menuItem);
             });
-            return total;
-        }
+        })
+        .catch(error => {
+            console.error('Error fetching menu items:', error);
+            menuGrid.innerHTML = '<div class="error-message">Sorry, there was an error loading the menu.</div>';
+        });
+}
+
+// Fungsi untuk menambah atau mengurangi jumlah item
+function updateQuantity(itemId, delta) {
+    const quantityInput = document.getElementById(`quantity-${itemId}`);
+    let quantity = parseInt(quantityInput.value);
+    if (isNaN(quantity)) {
+        quantity = 0;
+    }
+    quantity += delta;
+
+    if (quantity < 1) {
+        quantity = 1; // Pastikan jumlah tidak kurang dari 1
+    }
+
+    quantityInput.value = quantity;
+}
+
+// Fungsi untuk mengirim form dan menambahkan item ke keranjang
+function submitCartForm(event, itemId, itemName, itemPrice) {
+    event.preventDefault();
+
+    // const level = document.getElementById(`level-${itemId}`).value;
+    const quantity = document.getElementById(`quantity-${itemId}`).value;
+
+    const cartItem = {
+        id_menu: itemId,
+        name: itemName,
+        price: parseFloat(itemPrice),
+        quantity: parseInt(quantity),
+        // level: level
+    };
+
+    console.log('Adding to cart:', cartItem);
     
-        // Fungsi untuk menampilkan keranjang di halaman order
-        function displayCartOnOrderPage() {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const cartDisplay = document.getElementById('cart-items');
-            cartDisplay.innerHTML = '';
-    
-            let total = 0;
-    
-            cart.forEach(item => {
-                cartDisplay.innerHTML += `<div>${item.name} - ${item.quantity} x Rp ${item.price.toLocaleString('id-ID')}</div>`;
-                total += item.price * item.quantity;
-            });
-    
-            cartDisplay.innerHTML += `<div>Total: Rp ${total.toLocaleString('id-ID')}</div>`;
-        }
+    // Logic untuk menambahkan item ke keranjang
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.push(cartItem);
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    alert(`${itemName} telah ditambahkan ke keranjang!`);
+}
+
+
+
     
         // Inisialisasi ketika halaman dimuat
         document.addEventListener('DOMContentLoaded', () => {
             fetchAndDisplayMenuItems();
-            checkLoginStatus(); // Pastikan status login dicek saat halaman dimuat
-    
-            // Menampilkan keranjang di halaman order jika ada
-            if (window.location.pathname.includes('order')) {
-                displayCartOnOrderPage();
-            }
+            checkLoginStatus();
         });
-    </script> 
+    </script>
+    
+    
 </body>
 </html>

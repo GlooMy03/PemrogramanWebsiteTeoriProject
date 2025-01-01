@@ -205,37 +205,81 @@
             checkLoginStatus();
             updateCartDisplay();
         });
+        function addToCart(item) {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            // Validasi data item
+            if (!item.name || typeof item.price !== 'number' || typeof item.quantity !== 'number') {
+                console.error('Invalid item:', item);
+                return;
+            }
+
+            cart.push(item);
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
 
         function updateCartDisplay() {
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const cartItems = document.getElementById('cartItems');
-            const subtotalEl = document.getElementById('subtotal');
-            const taxEl = document.getElementById('tax');
-            const totalEl = document.getElementById('total');
+            console.log('Cart data:', cart);
 
-            cartItems.innerHTML = '';
+            // Pastikan data keranjang adalah array
+            if (!Array.isArray(cart)) {
+                console.error('Cart is not an array:', cart);
+                return;
+            }
+
             let subtotal = 0;
 
+            // Validasi item dan hitung subtotal
             cart.forEach(item => {
-                const li = document.createElement('li');
+                if (item.price == null || item.quantity == null || typeof item.price !== 'number' || typeof item.quantity !== 'number') {
+                    console.error('Invalid item in cart:', item);
+                    return; // Skip item yang tidak valid
+                }
+
                 subtotal += item.price * item.quantity;
-                li.innerHTML = `
-                    <div class="cart-item">
-                        <span>${item.name}</span>
-                        <span>${item.quantity}x</span>
-                        <span>Rp ${item.price.toLocaleString()}</span>
-                    </div>
-                `;
-                cartItems.appendChild(li);
             });
 
+            console.log('Subtotal:', subtotal);
+
+            // Hitung pajak dan total
             const tax = subtotal * 0.1;
             const total = subtotal + tax;
 
-            subtotalEl.textContent = `Rp ${subtotal.toLocaleString()}`;
-            taxEl.textContent = `Rp ${tax.toLocaleString()}`;
-            totalEl.textContent = `Rp ${total.toLocaleString()}`;
+            console.log('Tax:', tax);
+            console.log('Total:', total);
+
+            // Update tampilan subtotal, pajak, dan total
+            document.getElementById('subtotal').textContent = `Rp ${subtotal.toLocaleString()}`;
+            document.getElementById('tax').textContent = `Rp ${tax.toLocaleString()}`;
+            document.getElementById('total').textContent = `Rp ${total.toLocaleString()}`;
         }
+
+        function displayOrder(orderData) {
+            orderData.forEach(item => {
+                // Periksa apakah URL gambar ada
+                const imageUrl = item.imageUrl || 'http://localhost/PemrogramanWebsiteTeoriProject/BE/uploadsMenu'; // Gambar default
+                
+                // Periksa apakah harga dan nama item ada
+                const price = item.price || 'Harga tidak tersedia';
+                const name = item.name || 'Nama item tidak tersedia';
+
+                // Membuat elemen untuk menampilkan item
+                const orderItemElement = document.createElement('div');
+                orderItemElement.classList.add('order-item');
+                
+                orderItemElement.innerHTML = `
+                    <img src="${imageUrl}" alt="${name}" />
+                    <h3>${name}</h3>
+                    <p>Price: ${price}</p>
+                    <p>Quantity: ${item.quantity}</p>
+                `;
+
+                // Menambahkan elemen item ke dalam tampilan pesanan
+                document.querySelector('#order-items').appendChild(orderItemElement);
+            });
+        }
+
     </script>
 </body>
 </html>

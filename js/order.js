@@ -1,7 +1,9 @@
 // Format number to Rupiah
 function formatRupiah(number) {
+    if (!number) return 'Rp 0';
     return 'Rp ' + number.toLocaleString('id-ID');
-  }
+}
+
   
   // Calculate total for a single item
   function calculateItemTotal(quantity, pricePerItem) {
@@ -9,107 +11,66 @@ function formatRupiah(number) {
   }
   
   // Update display for a single item
-  function updateItemDisplay(itemElement, quantity) {
-    const itemId = itemElement.dataset.id;
-    const price = parseInt(itemElement.dataset.price, 10);
-    const total = calculateItemTotal(quantity, price);
-  
-    itemElement.querySelector('.quantity').textContent = quantity;
-    itemElement.querySelector('.item-total').textContent = formatRupiah(total);
-  
-    // Update cart in Local Storage
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const itemIndex = cart.findIndex(item => item.id === itemId);
-    if (itemIndex !== -1) {
-      cart[itemIndex].quantity = quantity;
-      localStorage.setItem('cart', JSON.stringify(cart));
+  function updateCartDisplay() {
+    cartItemsContainer.innerHTML = ""; // Clear current cart items
+    if (cart.length === 0) {
+        cartItemsContainer.innerHTML = "<p>Keranjang kosong!</p>";
+    } else {
+        // Re-render all items in the cart
+        cart.forEach((item, index) => {
+            const listItem = document.createElement("li");
+            listItem.classList.add("food-item");
+            listItem.innerHTML = `...`; // Your item HTML
+            cartItemsContainer.appendChild(listItem);
+        });
     }
-  }
+}
   
   // Calculate and update cart totals
   function updateCartTotals() {
     let subtotal = 0;
-  
-    // Get cart items from Local Storage
+
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
-  
-    // Calculate subtotal
+
     cart.forEach(item => {
-      subtotal += calculateItemTotal(item.quantity, item.price);
+        subtotal += calculateItemTotal(item.quantity, item.price);
     });
-  
-    // Calculate tax and total
-    const tax = subtotal * 0.1; // 10% tax
+
+    const tax = subtotal * 0.1;
     const total = subtotal + tax;
-  
-    // Update display
-    document.getElementById('subtotal').textContent = formatRupiah(subtotal);
-    document.getElementById('tax').textContent = formatRupiah(tax);
-    document.getElementById('total').textContent = formatRupiah(total);
-  }
+
+    const subtotalElement = document.getElementById('subtotal');
+    const taxElement = document.getElementById('tax');
+    const totalElement = document.getElementById('total');
+
+    if (subtotalElement) subtotalElement.textContent = formatRupiah(subtotal);
+    if (taxElement) taxElement.textContent = formatRupiah(tax);
+    if (totalElement) totalElement.textContent = formatRupiah(total);
+}
+
   
   // Initialize cart functionality
   function initializeCart() {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     const cartItemsContainer = document.getElementById('cartItems');
-  
-    if (cart.length === 0) {
-      cartItemsContainer.innerHTML = "<p>Keranjang kosong!</p>";
-      return;
+
+    if (!cartItemsContainer) {
+        console.error("Elemen 'cartItems' tidak ditemukan.");
+        return;
     }
-  
+
+    if (cart.length === 0) {
+        cartItemsContainer.innerHTML = "<p>Keranjang kosong!</p>";
+        return;
+    }
+
     cart.forEach(item => {
-      const listItem = document.createElement('li');
-      listItem.classList.add('food-item');
-      listItem.dataset.id = item.id;
-      listItem.dataset.price = item.price;
-      listItem.innerHTML = `
-        <img src="assets/${item.image}" alt="${item.title}" width="80" height="80">
-        <div class="food-item-details">
-          <span class="food-name">${item.title}</span>
-          <span class="food-price">${formatRupiah(item.price)}</span>
-          <span class="food-category">${item.category}</span>
-        </div>
-        <div class="quantity-control">
-          <button class="qty-btn minus">-</button>
-          <span class="quantity">${item.quantity}</span>
-          <button class="qty-btn plus">+</button>
-        </div>
-        <span class="item-total">${formatRupiah(item.price * item.quantity)}</span>
-        <button class="remove-item" data-id="${item.id}">Hapus</button>
-      `;
-  
-      cartItemsContainer.appendChild(listItem);
-  
-      // Event listeners for quantity buttons
-      listItem.querySelector('.minus').addEventListener('click', () => {
-        if (item.quantity > 1) {
-          item.quantity--;
-          updateItemDisplay(listItem, item.quantity);
-          updateCartTotals();
-        }
-      });
-  
-      listItem.querySelector('.plus').addEventListener('click', () => {
-        item.quantity++;
-        updateItemDisplay(listItem, item.quantity);
-        updateCartTotals();
-      });
-  
-      // Remove item from cart
-      listItem.querySelector('.remove-item').addEventListener('click', () => {
-        const index = cart.findIndex(cartItem => cartItem.id === item.id);
-        if (index !== -1) {
-          cart.splice(index, 1);
-          localStorage.setItem('cart', JSON.stringify(cart));
-          location.reload(); // Refresh page to reflect changes
-        }
-      });
+        // Code untuk menambahkan item ke dalam DOM
     });
-  
-    // Initial calculation
+
     updateCartTotals();
-  }
+}
+
   
   // Submit order
   function submitOrder() {
@@ -215,9 +176,13 @@ document.addEventListener("DOMContentLoaded", function () {
         cart.forEach((item, index) => {
             const listItem = document.createElement("li");
             listItem.classList.add("food-item");
+        
+            // Use a default image if item.image is undefined
+            const imageUrl = item.image ? `assets/${item.image}` : 'http://localhost/PemrogramanWebsiteTeoriProject/BE/uploadsMenu'; // Replace with your default image path
+        
             listItem.innerHTML = `
                 <li class="food-item" data-id="${item.id}">
-                    <img src="assets/${item.image}" alt="${item.title}" width="80" height="80">
+                    <img src="${imageUrl}" alt="${item.title}" width="80" height="80">
                     <div class="food-item-details">
                         <span class="food-name">${item.title}</span>
                         <span class="food-price">${item.price}</span>
@@ -231,7 +196,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <span class="item-total">${item.price}</span>
                     <button class="remove-item" data-index="${index}">Hapus</button>
                 </li>
-
+        
                 <style>
                 .food-item {
                     display: grid;
@@ -240,31 +205,31 @@ document.addEventListener("DOMContentLoaded", function () {
                     align-items: center;
                     padding: 1rem;
                     border-bottom: 1px solid #eee;
-                    }
-
-                    .food-item-details {
+                }
+        
+                .food-item-details {
                     display: flex;
                     flex-direction: column;
                     gap: 0.25rem;
-                    }
-
-                    .food-name {
+                }
+        
+                .food-name {
                     font-weight: 500;
                     color: #333;
-                    }
-
-                    .food-price {
+                }
+        
+                .food-price {
                     color: #666;
                     font-size: 0.9rem;
-                    }
-
-                    .quantity-control {
+                }
+        
+                .quantity-control {
                     display: flex;
                     align-items: center;
                     gap: 0.5rem;
-                    }
-
-                    .qty-btn {
+                }
+        
+                .qty-btn {
                     width: 30px;
                     height: 30px;
                     border: 1px solid #FF0099;
@@ -276,30 +241,32 @@ document.addEventListener("DOMContentLoaded", function () {
                     align-items: center;
                     justify-content: center;
                     transition: all 0.2s ease;
-                    }
-
-                    .qty-btn:hover {
+                }
+        
+                .qty-btn:hover {
                     background: #FF0099;
                     color: white;
-                    }
-
-                    .quantity {
+                }
+        
+                .quantity {
                     min-width: 30px;
                     text-align: center;
                     font-weight: 500;
-                    }
+                }
                 </style>
             `;
+        
             cartItemsContainer.appendChild(listItem);
         });
+        
 
         // Tambahkan event listener untuk tombol hapus
         document.querySelectorAll(".remove-item").forEach((button) => {
             button.addEventListener("click", function () {
                 const index = this.getAttribute("data-index");
-                cart.splice(index, 1); // Hapus item dari array
-                localStorage.setItem("cart", JSON.stringify(cart)); // Perbarui Local Storage
-                location.reload(); // Refresh halaman
+                cart.splice(index, 1); // Remove item from array
+                localStorage.setItem("cart", JSON.stringify(cart)); // Update local storage
+                updateCartDisplay(); // Call a function to update the cart display without reload
             });
         });
     }
