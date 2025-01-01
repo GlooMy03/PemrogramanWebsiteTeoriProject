@@ -103,8 +103,6 @@
     <script>
         // Cek apakah pengguna sudah login
         function checkLoginStatus() {
-            // Simpan status login pengguna setelah berhasil login
-            sessionStorage.setItem('user', 'username');  // Ganti 'username' dengan informasi pengguna yang sesuai
             const user = sessionStorage.getItem('user');  // Cek di sessionStorage
 
             if (user) {
