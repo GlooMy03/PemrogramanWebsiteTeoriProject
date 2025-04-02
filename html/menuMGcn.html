@@ -157,11 +157,14 @@
               <a href="contact.html" class="menu-item">Contact</a>
           </div>
           <div class="right-menu">
-            <button class="login" id="loginBtn">Login</button>
-            <button class="sign-in" id="signUpBtn">Sign In</button>
-            <button class="profile" id="profileBtn" onclick="location.href='profile.html';"style="display: none;">Profile</button>
+            <!-- Tombol login dan signup yang hanya muncul jika user belum login -->
+            <button id="loginBtn" class="login" onclick="location.href='login.html';">Login</button>
+            <button id="signUpBtn" class="sign-Up" onclick="location.href='signup.html';">Sign Up</button>
+
+            <!-- Tombol profile yang hanya muncul jika user sudah login -->
+            <button id="profileBtn" class="profile" onclick="location.href='profile.html';" style="display:none;">Profile</button>
         </div>
-        
+    
 
             </div>
         </div>

@@ -69,7 +69,6 @@ function addOrUpdateUser($conn)
 
             // Gunakan data yang ada jika tidak ada input baru
             $email = $email ?: $existingUser['email'];
-            $password = $password ?: $existingUser['password'];
             $role = $role ?: $existingUser['role'];
         }
 
@@ -126,7 +125,7 @@ function addOrUpdateUser($conn)
 
         return ['status' => 'error', 'message' => 'Gagal menyimpan user'];
     } catch (PDOException $e) {
-        return ['status' => 'error', 'message' => 'Kesalahan database: ' . $e->getMessage()];
+        return ['status' => 'error', 'message' => 'Username sudah ada'];
     }
 }
 

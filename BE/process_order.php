@@ -51,4 +51,3 @@ if (isset($data['userId']) && isset($data['items']) && count($data['items']) > 0
 } else {
     echo json_encode(['success' => false, 'message' => 'Invalid data']);
 }
-?>
